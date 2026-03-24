@@ -11,7 +11,7 @@
 
 defined('ABSPATH') || exit;
 
-define('COMMUNITY_MASTER_VERSION', '1.1.0');
+define('COMMUNITY_MASTER_VERSION', '1.1.1');
 define('COMMUNITY_MASTER_FILE', __FILE__);
 define('COMMUNITY_MASTER_DIR', plugin_dir_path(__FILE__));
 

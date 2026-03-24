@@ -162,17 +162,16 @@
 .cm-badge {
     display: inline-flex;
     align-items: center;
-    font-size: 0.55em;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 0.25em 0.55em;
-    border-radius: 0.25em;
+    padding: 4px 10px;
+    border-radius: 4px;
     vertical-align: middle;
     margin-left: 0.5rem;
     position: relative;
-    top: -0.1em;
-    height: 1.6em;
+    top: -2px;
     line-height: 1;
 }
 
@@ -194,16 +193,14 @@
 .cm-tile__btn {
     display: inline-flex;
     align-items: center;
-    padding: 0.25em 0.55em;
-    font-size: 0.55em;
+    padding: 4px 10px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     white-space: nowrap;
     text-decoration: none;
-    border-radius: 0.25em;
-    vertical-align: middle;
-    height: 1.6em;
+    border-radius: 4px;
     line-height: 1;
     transition: opacity 0.15s, transform 0.15s;
     cursor: pointer;
