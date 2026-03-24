@@ -105,6 +105,62 @@ class CM_CPT_Project {
     }
 
     /**
+     * Validate GitHub URL on REST API create/update.
+     *
+     * Rejects non-github.com URLs with a 400 WP_Error, mirroring the
+     * validation in CM_Meta_Boxes::save_meta().
+     *
+     * @param WP_Post|WP_Error $post    Post object (or error from earlier filter).
+     * @param WP_REST_Request  $request REST request.
+     * @return WP_Post|WP_Error
+     */
+    public static function validate_rest_github_url( $post, WP_REST_Request $request ) {
+        if ( is_wp_error( $post ) ) {
+            return $post;
+        }
+
+        $meta = $request->get_param( 'meta' );
+
+        if ( is_array( $meta ) && ! empty( $meta['_community_master_github_url'] ) ) {
+            $url = $meta['_community_master_github_url'];
+
+            if ( strpos( $url, 'https://github.com/' ) !== 0 ) {
+                return new WP_Error(
+                    'rest_invalid_github_url',
+                    __( 'GitHub URL must start with https://github.com/', 'community-master' ),
+                    [ 'status' => 400 ]
+                );
+            }
+        }
+
+        return $post;
+    }
+
+    /**
+     * Register custom REST fields for the community_project post type.
+     *
+     * Exposes menu_order as a readable/writable integer field.
+     */
+    public static function register_rest_fields(): void {
+        register_rest_field( 'community_project', 'menu_order', [
+            'get_callback'    => function ( $post ) {
+                return (int) get_post( $post['id'] )->menu_order;
+            },
+            'update_callback' => function ( $value, $post ) {
+                wp_update_post( [
+                    'ID'         => $post->ID,
+                    'menu_order' => (int) $value,
+                ] );
+            },
+            'schema'          => [
+                'type'        => 'integer',
+                'description' => 'Display order for project tiles',
+                'context'     => [ 'view', 'edit' ],
+            ],
+        ] );
+    }
+
+    /**
      * Remove all CPT capabilities from Administrator and Editor roles.
      */
     public static function remove_capabilities(): void {
