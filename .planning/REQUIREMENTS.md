@@ -17,10 +17,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Project Fields
 
 - [x] **FIELD-01**: Admin kann Projekt-Name eingeben (= Post Title)
-- [ ] **FIELD-02**: Admin kann Projekt-Beschreibung eingeben (= Post Content oder Meta)
+- [x] **FIELD-02**: Admin kann Projekt-Beschreibung eingeben (= Post Content oder Meta)
 - [x] **FIELD-03**: Admin kann Projekt-Logo hochladen (= Featured Image)
-- [ ] **FIELD-04**: Admin kann GitHub-URL eingeben (Meta Field, validiert auf github.com)
-- [ ] **FIELD-05**: Admin kann optionalen One-Line-Installer eingeben (Meta Field)
+- [x] **FIELD-04**: Admin kann GitHub-URL eingeben (Meta Field, validiert auf github.com)
+- [x] **FIELD-05**: Admin kann optionalen One-Line-Installer eingeben (Meta Field)
 - [x] **FIELD-06**: Admin kann Projektreihenfolge festlegen (menu_order)
 
 ### Frontend Display
@@ -46,7 +46,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SEC-01**: Alle Meta Field Eingaben werden sanitized (sanitize_callback)
 - [ ] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
 - [ ] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
-- [ ] **SEC-04**: Meta Boxes verwenden Nonce-Verification
+- [x] **SEC-04**: Meta Boxes verwenden Nonce-Verification
 - [ ] **SEC-05**: REST API verwendet capability-based Permission Checks
 
 ### Deployment
@@ -94,10 +94,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-03 | Phase 1 | Complete |
 | FOUND-04 | Phase 1 | Complete |
 | FIELD-01 | Phase 1 | Complete |
-| FIELD-02 | Phase 1 | Pending |
+| FIELD-02 | Phase 1 | Complete |
 | FIELD-03 | Phase 1 | Complete |
-| FIELD-04 | Phase 1 | Pending |
-| FIELD-05 | Phase 1 | Pending |
+| FIELD-04 | Phase 1 | Complete |
+| FIELD-05 | Phase 1 | Complete |
 | FIELD-06 | Phase 1 | Complete |
 | FRONT-01 | Phase 2 | Pending |
 | FRONT-02 | Phase 2 | Pending |
@@ -114,7 +114,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-01 | Phase 1 | Complete |
 | SEC-02 | Phase 2 | Pending |
 | SEC-03 | Phase 2 | Pending |
-| SEC-04 | Phase 1 | Pending |
+| SEC-04 | Phase 1 | Complete |
 | SEC-05 | Phase 3 | Pending |
 | DEPL-01 | Phase 4 | Pending |
 | DEPL-02 | Phase 4 | Pending |
