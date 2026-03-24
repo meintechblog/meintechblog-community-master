@@ -19,6 +19,7 @@ require_once COMMUNITY_MASTER_DIR . 'includes/class-community-master.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-cpt-project.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-meta-boxes.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-admin-columns.php';
+require_once COMMUNITY_MASTER_DIR . 'includes/class-shortcode.php';
 
 Community_Master::instance();
 

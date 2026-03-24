@@ -32,5 +32,6 @@ class Community_Master {
 
         new CM_Meta_Boxes();
         new CM_Admin_Columns();
+        new CM_Shortcode();
     }
 }
