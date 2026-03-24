@@ -50,7 +50,7 @@
 
 .cm-sort__select {
     padding: 0.75rem 1rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     min-height: 3rem;
     border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 0.5rem;
@@ -59,6 +59,8 @@
     font-family: inherit;
     cursor: pointer;
     white-space: nowrap;
+    -webkit-appearance: menulist;
+    appearance: menulist;
 }
 
 .cm-sort__select:focus {
@@ -69,6 +71,11 @@
 @media (max-width: 480px) {
     .cm-toolbar {
         flex-direction: column;
+    }
+
+    .cm-sort__select {
+        font-size: 16px;
+        min-height: 3.5rem;
     }
 }
 
@@ -161,17 +168,20 @@
 /* Badges */
 
 .cm-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     font-size: 0.55em;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 0.2em 0.5em;
+    padding: 0.25em 0.55em;
     border-radius: 0.25em;
     vertical-align: middle;
     margin-left: 0.5rem;
     position: relative;
     top: -0.1em;
+    height: 1.6em;
+    line-height: 1;
 }
 
 .cm-badge--proxmox {
@@ -190,8 +200,9 @@
 }
 
 .cm-tile__btn {
-    display: inline-block;
-    padding: 0.2em 0.5em;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25em 0.55em;
     font-size: 0.55em;
     font-weight: 700;
     text-transform: uppercase;
@@ -200,6 +211,8 @@
     text-decoration: none;
     border-radius: 0.25em;
     vertical-align: middle;
+    height: 1.6em;
+    line-height: 1;
     transition: opacity 0.15s, transform 0.15s;
     cursor: pointer;
     color: #fff;
