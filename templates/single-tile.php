@@ -11,6 +11,7 @@ defined('ABSPATH') || exit;
 $description  = $project->post_content;
 $github_url   = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer    = get_post_meta($project->ID, '_community_master_installer', true);
+$proxmox      = get_post_meta($project->ID, '_community_master_proxmox', true);
 $can_edit     = current_user_can('edit_community_project', $project->ID);
 $has_logo     = has_post_thumbnail($project->ID);
 
@@ -44,7 +45,12 @@ $bp_count = count($blogposts);
 
     <div class="cm-tile__body">
         <div class="cm-tile__header">
-            <h3 class="cm-tile__title"><?php echo esc_html(get_the_title($project->ID)); ?></h3>
+            <h3 class="cm-tile__title">
+                <?php echo esc_html(get_the_title($project->ID)); ?>
+                <?php if ($proxmox) : ?>
+                    <span class="cm-badge cm-badge--proxmox" title="<?php esc_attr_e('Setzt Proxmox VE voraus', 'community-master'); ?>">Proxmox</span>
+                <?php endif; ?>
+            </h3>
             <div class="cm-tile__header-links">
                 <?php if ($github_url) : ?>
                     <a class="cm-tile__btn cm-tile__btn--github" href="<?php echo esc_url($github_url); ?>" target="_blank" rel="noopener noreferrer">GitHub ↗</a>

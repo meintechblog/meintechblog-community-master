@@ -47,6 +47,7 @@ class CM_Meta_Boxes {
 
         $github_url = get_post_meta($post->ID, '_community_master_github_url', true);
         $installer  = get_post_meta($post->ID, '_community_master_installer', true);
+        $proxmox    = get_post_meta($post->ID, '_community_master_proxmox', true);
         ?>
         <table class="form-table">
             <tr>
@@ -59,6 +60,16 @@ class CM_Meta_Boxes {
                 <th><label for="cm-installer"><?php esc_html_e('One-Line-Installer', 'community-master'); ?></label></th>
                 <td>
                     <input type="text" id="cm-installer" name="_community_master_installer" value="<?php echo esc_attr($installer); ?>" style="width:100%;" placeholder="curl -sSL https://example.com/install.sh | bash" />
+                </td>
+            </tr>
+            <tr>
+                <th><?php esc_html_e('Tags', 'community-master'); ?></th>
+                <td>
+                    <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                        <input type="checkbox" name="_community_master_proxmox" value="1" <?php checked($proxmox, '1'); ?> />
+                        <?php esc_html_e('Proxmox-Integration', 'community-master'); ?>
+                    </label>
+                    <p class="description"><?php esc_html_e('Zeigt ein Proxmox-Badge beim Eintrag an.', 'community-master'); ?></p>
                 </td>
             </tr>
         </table>
@@ -243,6 +254,13 @@ class CM_Meta_Boxes {
         if (isset($_POST['_community_master_installer'])) {
             $installer = sanitize_text_field(wp_unslash($_POST['_community_master_installer']));
             update_post_meta($post_id, '_community_master_installer', $installer);
+        }
+
+        // Proxmox tag
+        if (isset($_POST['_community_master_proxmox'])) {
+            update_post_meta($post_id, '_community_master_proxmox', '1');
+        } else {
+            delete_post_meta($post_id, '_community_master_proxmox');
         }
 
         // Blogpost IDs (multiple)

@@ -157,6 +157,27 @@
     flex: 1;
 }
 
+/* Badges */
+
+.cm-badge {
+    display: inline-block;
+    font-size: 0.55em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.2em 0.5em;
+    border-radius: 0.25em;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    position: relative;
+    top: -0.1em;
+}
+
+.cm-badge--proxmox {
+    background: #e6520e;
+    color: #fff;
+}
+
 /* Header buttons (GitHub, Blogpost, Edit) */
 
 .cm-tile__header-links {

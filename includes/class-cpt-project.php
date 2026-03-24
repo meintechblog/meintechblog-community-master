@@ -176,6 +176,25 @@ class CM_CPT_Project {
             ],
         ];
 
+        // Proxmox flag
+        register_rest_field( 'community_project', 'community_master_proxmox', [
+            'get_callback'    => function ( $post ) {
+                return (bool) get_post_meta( $post['id'], '_community_master_proxmox', true );
+            },
+            'update_callback' => function ( $value, $post ) {
+                if ( $value ) {
+                    update_post_meta( $post->ID, '_community_master_proxmox', '1' );
+                } else {
+                    delete_post_meta( $post->ID, '_community_master_proxmox' );
+                }
+            },
+            'schema'          => [
+                'type'        => 'boolean',
+                'description' => 'Proxmox integration flag',
+                'context'     => [ 'view', 'edit' ],
+            ],
+        ] );
+
         // Blogpost IDs (array field, handled separately)
         register_rest_field( 'community_project', 'community_master_blogpost_ids', [
             'get_callback'    => function ( $post ) {
