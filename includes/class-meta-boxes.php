@@ -88,7 +88,7 @@ class CM_Meta_Boxes {
         // Get recent unlinked posts
         $recent_posts = get_posts([
             'post_type'      => 'post',
-            'posts_per_page' => 5,
+            'posts_per_page' => 10,
             'post_status'    => 'publish',
             'orderby'        => 'date',
             'order'          => 'DESC',
