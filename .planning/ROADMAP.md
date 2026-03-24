@@ -60,7 +60,10 @@ Plans:
   2. PUT/PATCH requests update existing project fields including meta data
   3. DELETE requests remove a project
   4. Unauthenticated or unauthorized requests are rejected with appropriate HTTP status codes
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 03-01-PLAN.md — REST API hardening (GitHub URL validation, menu_order exposure) and verification test script
 
 ### Phase 4: Deployment & Launch
 **Goal**: Plugin is live on meintechblog.de with IP-Cam Master as the first visible community project
@@ -82,5 +85,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Plugin Core & Admin | 0/2 | Planning complete | - |
 | 2. Frontend Display | 0/2 | Planning complete | - |
-| 3. REST API | 0/0 | Not started | - |
+| 3. REST API | 0/1 | Planning complete | - |
 | 4. Deployment & Launch | 0/0 | Not started | - |
