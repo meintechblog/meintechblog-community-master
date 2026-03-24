@@ -174,6 +174,12 @@ class CM_CPT_Project {
                 'desc'      => 'One-line install command',
                 'sanitize'  => 'sanitize_text_field',
             ],
+            'community_master_blogpost_id' => [
+                'meta_key'  => '_community_master_blogpost_id',
+                'type'      => 'integer',
+                'desc'      => 'Linked blog post ID',
+                'sanitize'  => 'absint',
+            ],
         ];
 
         foreach ( $meta_fields as $field_name => $config ) {

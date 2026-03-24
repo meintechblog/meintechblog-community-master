@@ -9,9 +9,10 @@ defined('ABSPATH') || exit;
  */
 
 $description = $project->post_content;
-$github_url  = get_post_meta($project->ID, '_community_master_github_url', true);
-$installer   = get_post_meta($project->ID, '_community_master_installer', true);
-$can_edit    = current_user_can('edit_community_project', $project->ID);
+$github_url   = get_post_meta($project->ID, '_community_master_github_url', true);
+$installer    = get_post_meta($project->ID, '_community_master_installer', true);
+$blogpost_id  = get_post_meta($project->ID, '_community_master_blogpost_id', true);
+$can_edit     = current_user_can('edit_community_project', $project->ID);
 $has_logo    = has_post_thumbnail($project->ID);
 ?>
 <div class="cm-tile<?php echo $has_logo ? ' cm-tile--has-logo' : ''; ?>" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>">
@@ -42,10 +43,20 @@ $has_logo    = has_post_thumbnail($project->ID);
             </div>
         <?php endif; ?>
 
-        <?php if ($github_url) : ?>
-            <a class="cm-tile__github" href="<?php echo esc_url($github_url); ?>" target="_blank" rel="noopener noreferrer">
-                <?php echo esc_html__('View on GitHub', 'community-master'); ?>
-            </a>
-        <?php endif; ?>
+        <div class="cm-tile__links">
+            <?php if ($github_url) : ?>
+                <a class="cm-tile__link cm-tile__link--github" href="<?php echo esc_url($github_url); ?>" target="_blank" rel="noopener noreferrer">
+                    <?php echo esc_html__('GitHub', 'community-master'); ?> ↗
+                </a>
+            <?php endif; ?>
+            <?php if ($blogpost_id) :
+                $bp = get_post((int) $blogpost_id);
+                if ($bp) : ?>
+                    <a class="cm-tile__link cm-tile__link--blogpost" href="<?php echo esc_url(get_permalink($bp)); ?>">
+                        <?php echo esc_html__('Blogartikel lesen', 'community-master'); ?> →
+                    </a>
+                <?php endif;
+            endif; ?>
+        </div>
     </div>
 </div>

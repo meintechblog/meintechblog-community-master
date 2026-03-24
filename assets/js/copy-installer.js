@@ -5,9 +5,7 @@
 /* Copy to clipboard with visual feedback */
 document.addEventListener('click', function (e) {
     var btn = e.target.closest('.cm-copy-btn');
-    if (!btn) {
-        return;
-    }
+    if (!btn) return;
 
     var text = btn.getAttribute('data-copy');
     var originalLabel = btn.textContent;
@@ -36,10 +34,16 @@ document.addEventListener('click', function (e) {
     }
 });
 
-/* Instant search filter */
-document.addEventListener('DOMContentLoaded', function () {
+/* Instant search filter — works with both DOMContentLoaded and defer/late loading */
+(function initSearch() {
     var input = document.querySelector('.cm-search__input');
-    if (!input) return;
+    if (!input) {
+        // Script loaded before DOM — wait and retry
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSearch);
+        }
+        return;
+    }
 
     var tiles = document.querySelectorAll('.cm-tile');
     var noResults = document.querySelector('.cm-no-results');
@@ -61,4 +65,4 @@ document.addEventListener('DOMContentLoaded', function () {
             noResults.style.display = (visibleCount === 0 && query) ? '' : 'none';
         }
     });
-});
+})();

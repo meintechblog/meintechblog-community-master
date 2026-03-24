@@ -193,12 +193,27 @@
     color: green;
 }
 
-/* GitHub link */
+/* Links row */
 
-.cm-tile__github {
-    display: inline-block;
+.cm-tile__links {
+    display: flex;
+    gap: 1rem;
     margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.cm-tile__link {
+    display: inline-block;
     font-weight: 600;
+    font-size: 0.9em;
+}
+
+.cm-tile__link--blogpost {
+    opacity: 0.75;
+}
+
+.cm-tile__link--blogpost:hover {
+    opacity: 1;
 }
 
 /* No results (search) */
