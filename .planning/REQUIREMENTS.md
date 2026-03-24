@@ -35,11 +35,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### REST API
 
-- [ ] **API-01**: Projekte können per REST API erstellt werden (POST)
-- [ ] **API-02**: Projekte können per REST API bearbeitet werden (PUT/PATCH)
-- [ ] **API-03**: Projekte können per REST API gelöscht werden (DELETE)
-- [ ] **API-04**: Alle Custom Meta Fields sind über REST API les- und schreibbar
-- [ ] **API-05**: REST API Endpunkte haben korrekte Permission Callbacks (capability-based)
+- [x] **API-01**: Projekte können per REST API erstellt werden (POST)
+- [x] **API-02**: Projekte können per REST API bearbeitet werden (PUT/PATCH)
+- [x] **API-03**: Projekte können per REST API gelöscht werden (DELETE)
+- [x] **API-04**: Alle Custom Meta Fields sind über REST API les- und schreibbar
+- [x] **API-05**: REST API Endpunkte haben korrekte Permission Callbacks (capability-based)
 
 ### Security
 
@@ -47,7 +47,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
 - [x] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
 - [x] **SEC-04**: Meta Boxes verwenden Nonce-Verification
-- [ ] **SEC-05**: REST API verwendet capability-based Permission Checks
+- [x] **SEC-05**: REST API verwendet capability-based Permission Checks
 
 ### Deployment
 
@@ -106,16 +106,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FRONT-05 | Phase 2 | Complete |
 | FRONT-06 | Phase 2 | Complete |
 | FRONT-07 | Phase 2 | Complete |
-| API-01 | Phase 3 | Pending |
-| API-02 | Phase 3 | Pending |
-| API-03 | Phase 3 | Pending |
-| API-04 | Phase 3 | Pending |
-| API-05 | Phase 3 | Pending |
+| API-01 | Phase 3 | Complete |
+| API-02 | Phase 3 | Complete |
+| API-03 | Phase 3 | Complete |
+| API-04 | Phase 3 | Complete |
+| API-05 | Phase 3 | Complete |
 | SEC-01 | Phase 1 | Complete |
 | SEC-02 | Phase 2 | Complete |
 | SEC-03 | Phase 2 | Complete |
 | SEC-04 | Phase 1 | Complete |
-| SEC-05 | Phase 3 | Pending |
+| SEC-05 | Phase 3 | Complete |
 | DEPL-01 | Phase 4 | Pending |
 | DEPL-02 | Phase 4 | Pending |
 | DEPL-03 | Phase 4 | Pending |

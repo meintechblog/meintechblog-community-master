@@ -63,7 +63,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md — REST API hardening (GitHub URL validation, menu_order exposure) and verification test script
+- [x] 03-01-PLAN.md — REST API hardening (GitHub URL validation, menu_order exposure) and verification test script
 
 ### Phase 4: Deployment & Launch
 **Goal**: Plugin is live on meintechblog.de with IP-Cam Master as the first visible community project
