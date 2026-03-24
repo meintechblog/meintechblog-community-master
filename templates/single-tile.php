@@ -12,6 +12,7 @@ $description = get_post_meta($project->ID, '_community_master_description', true
 $github_url  = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer   = get_post_meta($project->ID, '_community_master_installer', true);
 ?>
+<?php $can_edit = current_user_can('edit_community_project', $project->ID); ?>
 <div class="cm-tile" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>">
     <?php if (has_post_thumbnail($project->ID)) : ?>
         <div class="cm-tile__logo">
@@ -19,7 +20,12 @@ $installer   = get_post_meta($project->ID, '_community_master_installer', true);
         </div>
     <?php endif; ?>
 
-    <h3 class="cm-tile__title"><?php echo esc_html(get_the_title($project->ID)); ?></h3>
+    <div class="cm-tile__header">
+        <h3 class="cm-tile__title"><?php echo esc_html(get_the_title($project->ID)); ?></h3>
+        <?php if ($can_edit) : ?>
+            <a class="cm-tile__edit" href="<?php echo esc_url(get_edit_post_link($project->ID)); ?>" title="<?php esc_attr_e('Bearbeiten', 'community-master'); ?>">&#9998;</a>
+        <?php endif; ?>
+    </div>
 
     <?php if ($description) : ?>
         <div class="cm-tile__description"><?php echo wp_kses_post($description); ?></div>
