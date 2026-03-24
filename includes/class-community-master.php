@@ -31,5 +31,6 @@ class Community_Master {
         add_action('init', [CM_CPT_Project::class, 'register_meta_fields']);
 
         new CM_Meta_Boxes();
+        new CM_Admin_Columns();
     }
 }
