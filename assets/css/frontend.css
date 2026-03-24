@@ -115,7 +115,7 @@
     }
 }
 
-/* Header (title + links) */
+/* Header (title + buttons) */
 
 .cm-tile__header {
     display: flex;
@@ -132,39 +132,30 @@
     flex: 1;
 }
 
-/* Header links (GitHub, Blogpost, Edit) */
+/* Header buttons (GitHub, Blogpost, Edit) */
 
 .cm-tile__header-links {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 0.5rem;
     flex-shrink: 0;
     margin-left: auto;
 }
 
-.cm-tile__link {
-    font-size: 0.85em;
+.cm-tile__btn {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8em;
     font-weight: 600;
     white-space: nowrap;
-}
-
-.cm-tile__link--github {
-    padding: 0.3rem 0.75rem;
+    text-decoration: none;
     border: 1px solid currentColor;
     border-radius: 0.3rem;
-    text-decoration: none;
-    opacity: 0.8;
+    opacity: 0.7;
+    transition: opacity 0.15s;
 }
 
-.cm-tile__link--github:hover {
-    opacity: 1;
-}
-
-.cm-tile__link--blogpost {
-    opacity: 0.6;
-}
-
-.cm-tile__link--blogpost:hover {
+.cm-tile__btn:hover {
     opacity: 1;
 }
 
@@ -193,6 +184,12 @@
 .cm-tile__installer {
     position: relative;
     margin-bottom: 1rem;
+}
+
+.cm-tile__installer-label {
+    margin: 0 0 0.4rem;
+    font-size: 0.85em;
+    opacity: 0.65;
 }
 
 .cm-tile__installer pre {
@@ -230,12 +227,103 @@
     color: green;
 }
 
-/* Installer label */
+/* Blogpost preview (collapsible) */
 
-.cm-tile__installer-label {
-    margin: 0 0 0.4rem;
-    font-size: 0.85em;
-    opacity: 0.65;
+.cm-tile__blogpost-preview {
+    margin-top: 0.75rem;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.cm-tile__blogpost-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.cm-tile__blogpost-summary::-webkit-details-marker {
+    display: none;
+}
+
+.cm-tile__blogpost-icon {
+    flex-shrink: 0;
+    font-size: 1em;
+}
+
+.cm-tile__blogpost-title {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cm-tile__blogpost-toggle {
+    flex-shrink: 0;
+    font-size: 0.7em;
+    opacity: 0.5;
+    transition: transform 0.2s;
+}
+
+.cm-tile__blogpost-toggle::after {
+    content: '▼';
+}
+
+.cm-tile__blogpost-preview[open] .cm-tile__blogpost-toggle {
+    transform: rotate(180deg);
+}
+
+.cm-tile__blogpost-content {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem;
+}
+
+.cm-tile__blogpost-thumb {
+    flex-shrink: 0;
+    width: 160px;
+}
+
+.cm-tile__blogpost-thumb img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    display: block;
+}
+
+.cm-tile__blogpost-text {
+    flex: 1;
+    font-size: 0.9em;
+    line-height: 1.5;
+    min-width: 0;
+}
+
+.cm-tile__blogpost-text p {
+    margin: 0 0 0.5rem;
+}
+
+.cm-tile__blogpost-readmore {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 480px) {
+    .cm-tile__blogpost-content {
+        flex-direction: column;
+    }
+
+    .cm-tile__blogpost-thumb {
+        width: 100%;
+    }
 }
 
 /* No results (search) */
