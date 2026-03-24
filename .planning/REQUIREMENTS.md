@@ -25,13 +25,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Frontend Display
 
-- [ ] **FRONT-01**: Shortcode `[community-master]` zeigt Projekt-Grid an
-- [ ] **FRONT-02**: Kacheln zeigen Logo, Name, Beschreibung und GitHub-Link
-- [ ] **FRONT-03**: Grid ist responsive (3 Spalten Desktop, 2 Tablet, 1 Mobile)
-- [ ] **FRONT-04**: One-Line-Installer wird nur angezeigt wenn vorhanden, in kopierbarer Code-Box
-- [ ] **FRONT-05**: Copy-to-Clipboard Button für One-Line-Installer mit visuellem Feedback
-- [ ] **FRONT-06**: Design integriert sich ins bestehende WordPress-Theme (kein eigenes Styling)
-- [ ] **FRONT-07**: Empty State zeigt hilfreiche Nachricht wenn keine Projekte existieren
+- [x] **FRONT-01**: Shortcode `[community-master]` zeigt Projekt-Grid an
+- [x] **FRONT-02**: Kacheln zeigen Logo, Name, Beschreibung und GitHub-Link
+- [x] **FRONT-03**: Grid ist responsive (3 Spalten Desktop, 2 Tablet, 1 Mobile)
+- [x] **FRONT-04**: One-Line-Installer wird nur angezeigt wenn vorhanden, in kopierbarer Code-Box
+- [x] **FRONT-05**: Copy-to-Clipboard Button für One-Line-Installer mit visuellem Feedback
+- [x] **FRONT-06**: Design integriert sich ins bestehende WordPress-Theme (kein eigenes Styling)
+- [x] **FRONT-07**: Empty State zeigt hilfreiche Nachricht wenn keine Projekte existieren
 
 ### REST API
 
@@ -44,8 +44,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Security
 
 - [x] **SEC-01**: Alle Meta Field Eingaben werden sanitized (sanitize_callback)
-- [ ] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
-- [ ] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
+- [x] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
+- [x] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
 - [x] **SEC-04**: Meta Boxes verwenden Nonce-Verification
 - [ ] **SEC-05**: REST API verwendet capability-based Permission Checks
 
@@ -99,21 +99,21 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FIELD-04 | Phase 1 | Complete |
 | FIELD-05 | Phase 1 | Complete |
 | FIELD-06 | Phase 1 | Complete |
-| FRONT-01 | Phase 2 | Pending |
-| FRONT-02 | Phase 2 | Pending |
-| FRONT-03 | Phase 2 | Pending |
-| FRONT-04 | Phase 2 | Pending |
-| FRONT-05 | Phase 2 | Pending |
-| FRONT-06 | Phase 2 | Pending |
-| FRONT-07 | Phase 2 | Pending |
+| FRONT-01 | Phase 2 | Complete |
+| FRONT-02 | Phase 2 | Complete |
+| FRONT-03 | Phase 2 | Complete |
+| FRONT-04 | Phase 2 | Complete |
+| FRONT-05 | Phase 2 | Complete |
+| FRONT-06 | Phase 2 | Complete |
+| FRONT-07 | Phase 2 | Complete |
 | API-01 | Phase 3 | Pending |
 | API-02 | Phase 3 | Pending |
 | API-03 | Phase 3 | Pending |
 | API-04 | Phase 3 | Pending |
 | API-05 | Phase 3 | Pending |
 | SEC-01 | Phase 1 | Complete |
-| SEC-02 | Phase 2 | Pending |
-| SEC-03 | Phase 2 | Pending |
+| SEC-02 | Phase 2 | Complete |
+| SEC-03 | Phase 2 | Complete |
 | SEC-04 | Phase 1 | Complete |
 | SEC-05 | Phase 3 | Pending |
 | DEPL-01 | Phase 4 | Pending |

@@ -48,7 +48,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Shortcode class, templates, CSS/JS assets, and plugin wiring
+- [x] 02-01-PLAN.md — Shortcode class, templates, CSS/JS assets, and plugin wiring
 - [ ] 02-02-PLAN.md — Visual verification checkpoint on WordPress
 
 ### Phase 3: REST API
