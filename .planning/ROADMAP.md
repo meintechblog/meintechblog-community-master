@@ -45,8 +45,11 @@ Plans:
   3. One-line installer appears only when set, in a copyable code box with a copy button that gives visual feedback
   4. Page with no projects shows a helpful empty state message
   5. All output is properly escaped against XSS (esc_html, esc_url, esc_attr)
-**Plans**: TBD
-**UI hint**: yes
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Shortcode class, templates, CSS/JS assets, and plugin wiring
+- [ ] 02-02-PLAN.md — Visual verification checkpoint on WordPress
 
 ### Phase 3: REST API
 **Goal**: External clients (especially Claude) can create, update, and delete community projects programmatically
@@ -78,6 +81,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Plugin Core & Admin | 0/2 | Planning complete | - |
-| 2. Frontend Display | 0/0 | Not started | - |
+| 2. Frontend Display | 0/2 | Planning complete | - |
 | 3. REST API | 0/0 | Not started | - |
 | 4. Deployment & Launch | 0/0 | Not started | - |
