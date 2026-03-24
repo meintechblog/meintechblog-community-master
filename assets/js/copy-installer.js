@@ -1,8 +1,8 @@
 /**
- * Community Master - Copy to clipboard + instant search filter.
+ * Community Master - Copy to clipboard, search filter, sort.
  */
 
-/* Copy to clipboard with visual feedback */
+/* Copy to clipboard */
 document.addEventListener('click', function (e) {
     var btn = e.target.closest('.cm-copy-btn');
     if (!btn) return;
@@ -34,35 +34,62 @@ document.addEventListener('click', function (e) {
     }
 });
 
-/* Instant search filter — works with both DOMContentLoaded and defer/late loading */
-(function initSearch() {
+/* Search + Sort */
+(function init() {
     var input = document.querySelector('.cm-search__input');
-    if (!input) {
-        // Script loaded before DOM — wait and retry
+    var sortSelect = document.querySelector('.cm-sort__select');
+    var grid = document.querySelector('.cm-grid');
+    if (!input || !grid) {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initSearch);
+            document.addEventListener('DOMContentLoaded', init);
         }
         return;
     }
 
-    var tiles = document.querySelectorAll('.cm-tile');
     var noResults = document.querySelector('.cm-no-results');
 
-    input.addEventListener('input', function () {
-        var query = this.value.toLowerCase().trim();
+    function getTiles() {
+        return Array.prototype.slice.call(grid.querySelectorAll('.cm-tile'));
+    }
+
+    function filterAndSort() {
+        var query = (input.value || '').toLowerCase().trim();
+        var sort = sortSelect ? sortSelect.value : 'newest';
+        var tiles = getTiles();
         var visibleCount = 0;
 
+        // Filter
         tiles.forEach(function (tile) {
             var title = tile.getAttribute('data-cm-title') || '';
             var desc = tile.getAttribute('data-cm-desc') || '';
             var match = !query || title.indexOf(query) !== -1 || desc.indexOf(query) !== -1;
-
             tile.style.display = match ? '' : 'none';
+            tile._visible = match;
             if (match) visibleCount++;
         });
+
+        // Sort visible tiles
+        var visible = tiles.filter(function (t) { return t._visible; });
+        if (sort === 'name') {
+            visible.sort(function (a, b) {
+                return (a.getAttribute('data-cm-title') || '').localeCompare(b.getAttribute('data-cm-title') || '');
+            });
+        } else {
+            visible.sort(function (a, b) {
+                return (b.getAttribute('data-cm-date') || '').localeCompare(a.getAttribute('data-cm-date') || '');
+            });
+        }
+
+        // Re-append in order
+        visible.forEach(function (tile) { grid.appendChild(tile); });
+        // Append hidden ones at end
+        tiles.filter(function (t) { return !t._visible; }).forEach(function (tile) { grid.appendChild(tile); });
 
         if (noResults) {
             noResults.style.display = (visibleCount === 0 && query) ? '' : 'none';
         }
-    });
+    }
+
+    input.addEventListener('input', filterAndSort);
+    if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
 })();

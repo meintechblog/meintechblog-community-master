@@ -40,14 +40,6 @@ class CM_Meta_Boxes {
             'default'
         );
 
-        add_meta_box(
-            'community_master_sort_order',
-            __('Sortierung', 'community-master'),
-            [$this, 'render_sort_order_meta_box'],
-            'community_project',
-            'side',
-            'default'
-        );
     }
 
     public function render_fields_meta_box(WP_Post $post): void {
@@ -221,13 +213,6 @@ class CM_Meta_Boxes {
         <?php
     }
 
-    public function render_sort_order_meta_box(WP_Post $post): void {
-        ?>
-        <label for="cm-menu-order"><?php esc_html_e('Reihenfolge (niedrigere Zahl = weiter oben)', 'community-master'); ?></label>
-        <input type="number" id="cm-menu-order" name="community_master_menu_order" value="<?php echo esc_attr($post->menu_order); ?>" min="0" step="1" style="width:100%;" />
-        <?php
-    }
-
     public function save_meta(int $post_id, WP_Post $post): void {
         $nonce = isset($_POST['community_master_nonce'])
             ? sanitize_text_field(wp_unslash($_POST['community_master_nonce']))
@@ -269,12 +254,5 @@ class CM_Meta_Boxes {
             update_post_meta($post_id, '_community_master_blogpost_ids', []);
         }
 
-        // Menu order
-        if (isset($_POST['community_master_menu_order'])) {
-            $order = (int) $_POST['community_master_menu_order'];
-            remove_action('save_post_community_project', [$this, 'save_meta']);
-            wp_update_post(['ID' => $post_id, 'menu_order' => $order]);
-            add_action('save_post_community_project', [$this, 'save_meta'], 10, 2);
-        }
     }
 }

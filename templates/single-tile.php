@@ -35,7 +35,7 @@ if (!empty($blogpost_ids)) {
 }
 $bp_count = count($blogposts);
 ?>
-<div class="cm-tile<?php echo $has_logo ? ' cm-tile--has-logo' : ''; ?>" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>">
+<div class="cm-tile<?php echo $has_logo ? ' cm-tile--has-logo' : ''; ?>" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>" data-cm-date="<?php echo esc_attr($project->post_date); ?>">
     <?php if ($has_logo) : ?>
         <div class="cm-tile__logo">
             <?php echo get_the_post_thumbnail($project->ID, 'community-master-icon'); ?>
