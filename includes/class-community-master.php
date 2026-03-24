@@ -29,5 +29,7 @@ class Community_Master {
     private function __construct() {
         add_action('init', [CM_CPT_Project::class, 'register']);
         add_action('init', [CM_CPT_Project::class, 'register_meta_fields']);
+
+        new CM_Meta_Boxes();
     }
 }
