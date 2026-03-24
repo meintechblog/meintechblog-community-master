@@ -1,0 +1,119 @@
+/* Community Master - Frontend Tile Grid */
+
+.cm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .cm-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .cm-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tile card */
+
+.cm-tile {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.cm-tile:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+
+.cm-tile__logo {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.cm-tile__logo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+}
+
+/* Title */
+
+.cm-tile__title {
+    margin: 0 0 0.5rem;
+}
+
+/* Description */
+
+.cm-tile__description {
+    flex: 1;
+    margin: 0 0 1rem;
+}
+
+/* Installer code box */
+
+.cm-tile__installer {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.cm-tile__installer pre {
+    margin: 0;
+    padding: 0.75rem;
+    overflow-x: auto;
+    background: rgba(128, 128, 128, 0.1);
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+}
+
+.cm-tile__installer code {
+    white-space: pre;
+    word-break: break-all;
+}
+
+/* Copy button */
+
+.cm-copy-btn {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75em;
+    cursor: pointer;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 0.25rem;
+    background: inherit;
+    color: inherit;
+}
+
+.cm-copy-btn--copied {
+    border-color: green;
+    color: green;
+}
+
+/* GitHub link */
+
+.cm-tile__github {
+    display: inline-block;
+    margin-top: auto;
+    font-weight: 600;
+}
+
+/* Empty state */
+
+.cm-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: inherit;
+    opacity: 0.6;
+}
