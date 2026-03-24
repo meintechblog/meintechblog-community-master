@@ -44,17 +44,11 @@ class CM_Meta_Boxes {
     public function render_fields_meta_box(WP_Post $post): void {
         wp_nonce_field('community_master_save_meta', 'community_master_nonce');
 
-        $description = get_post_meta($post->ID, '_community_master_description', true);
         $github_url  = get_post_meta($post->ID, '_community_master_github_url', true);
         $installer   = get_post_meta($post->ID, '_community_master_installer', true);
         ?>
+        <p class="description" style="margin-bottom:1em;"><?php esc_html_e('Die Beschreibung wird über den Editor oben eingegeben.', 'community-master'); ?></p>
         <table class="form-table">
-            <tr>
-                <th><label for="cm-description"><?php esc_html_e('Beschreibung', 'community-master'); ?></label></th>
-                <td>
-                    <textarea id="cm-description" name="_community_master_description" rows="5" cols="50" style="width:100%;"><?php echo esc_textarea($description); ?></textarea>
-                </td>
-            </tr>
             <tr>
                 <th><label for="cm-github-url"><?php esc_html_e('GitHub URL', 'community-master'); ?></label></th>
                 <td>
@@ -104,13 +98,7 @@ class CM_Meta_Boxes {
             return;
         }
 
-        // 4. Sanitize and save description.
-        if (isset($_POST['_community_master_description'])) {
-            $description = sanitize_textarea_field(wp_unslash($_POST['_community_master_description']));
-            update_post_meta($post_id, '_community_master_description', $description);
-        }
-
-        // 5. Sanitize and save GitHub URL (FIELD-04: reject non-github.com URLs).
+        // 4. Sanitize and save GitHub URL (FIELD-04: reject non-github.com URLs).
         if (isset($_POST['_community_master_github_url'])) {
             $github_url = esc_url_raw(wp_unslash($_POST['_community_master_github_url']));
 

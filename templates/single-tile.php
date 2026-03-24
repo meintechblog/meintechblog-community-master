@@ -8,11 +8,11 @@ defined('ABSPATH') || exit;
  * @var WP_Post $project Available from the tile-grid foreach loop.
  */
 
-$description = get_post_meta($project->ID, '_community_master_description', true);
+$description = $project->post_content;
 $github_url  = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer   = get_post_meta($project->ID, '_community_master_installer', true);
 ?>
-<div class="cm-tile" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower($description)); ?>">
+<div class="cm-tile" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>">
     <?php if (has_post_thumbnail($project->ID)) : ?>
         <div class="cm-tile__logo">
             <?php echo get_the_post_thumbnail($project->ID, 'medium'); ?>
@@ -22,7 +22,7 @@ $installer   = get_post_meta($project->ID, '_community_master_installer', true);
     <h3 class="cm-tile__title"><?php echo esc_html(get_the_title($project->ID)); ?></h3>
 
     <?php if ($description) : ?>
-        <p class="cm-tile__description"><?php echo esc_html($description); ?></p>
+        <div class="cm-tile__description"><?php echo wp_kses_post(apply_filters('the_content', $description)); ?></div>
     <?php endif; ?>
 
     <?php if ($installer) : ?>

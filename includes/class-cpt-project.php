@@ -31,7 +31,7 @@ class CM_CPT_Project {
             'show_in_rest'    => true,
             'capability_type' => 'community_project',
             'map_meta_cap'    => true,
-            'supports'        => ['title', 'thumbnail'],
+            'supports'        => ['title', 'editor', 'thumbnail'],
             'menu_icon'       => 'dashicons-groups',
             'menu_position'   => 25,
             'has_archive'     => false,
@@ -160,13 +160,9 @@ class CM_CPT_Project {
         ] );
 
         // Expose meta fields via register_rest_field (more reliable than show_in_rest on register_post_meta)
+        // Description is now post_content (WordPress 'content' field in REST).
+        // Only meta fields that aren't native WP fields need explicit registration.
         $meta_fields = [
-            'community_master_description' => [
-                'meta_key'  => '_community_master_description',
-                'type'      => 'string',
-                'desc'      => 'Project description',
-                'sanitize'  => 'sanitize_textarea_field',
-            ],
             'community_master_github_url' => [
                 'meta_key'  => '_community_master_github_url',
                 'type'      => 'string',
