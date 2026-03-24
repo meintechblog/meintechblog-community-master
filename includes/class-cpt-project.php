@@ -158,6 +158,44 @@ class CM_CPT_Project {
                 'context'     => [ 'view', 'edit' ],
             ],
         ] );
+
+        // Expose meta fields via register_rest_field (more reliable than show_in_rest on register_post_meta)
+        $meta_fields = [
+            'community_master_description' => [
+                'meta_key'  => '_community_master_description',
+                'type'      => 'string',
+                'desc'      => 'Project description',
+                'sanitize'  => 'sanitize_textarea_field',
+            ],
+            'community_master_github_url' => [
+                'meta_key'  => '_community_master_github_url',
+                'type'      => 'string',
+                'desc'      => 'GitHub repository URL',
+                'sanitize'  => 'esc_url_raw',
+            ],
+            'community_master_installer' => [
+                'meta_key'  => '_community_master_installer',
+                'type'      => 'string',
+                'desc'      => 'One-line install command',
+                'sanitize'  => 'sanitize_text_field',
+            ],
+        ];
+
+        foreach ( $meta_fields as $field_name => $config ) {
+            register_rest_field( 'community_project', $field_name, [
+                'get_callback'    => function ( $post ) use ( $config ) {
+                    return get_post_meta( $post['id'], $config['meta_key'], true );
+                },
+                'update_callback' => function ( $value, $post ) use ( $config ) {
+                    update_post_meta( $post->ID, $config['meta_key'], call_user_func( $config['sanitize'], $value ) );
+                },
+                'schema'          => [
+                    'type'        => $config['type'],
+                    'description' => $config['desc'],
+                    'context'     => [ 'view', 'edit' ],
+                ],
+            ] );
+        }
     }
 
     /**
