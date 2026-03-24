@@ -9,19 +9,19 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Plugin Foundation
 
-- [ ] **FOUND-01**: Plugin registriert Custom Post Type "community_project" mit Admin-UI
-- [ ] **FOUND-02**: Plugin aktiviert Featured Image Support für Projekt-Logos
-- [ ] **FOUND-03**: Plugin flusht Rewrite Rules nur bei Activation/Deactivation
-- [ ] **FOUND-04**: Plugin hat saubere Uninstall-Routine (entfernt CPT-Daten und Optionen)
+- [x] **FOUND-01**: Plugin registriert Custom Post Type "community_project" mit Admin-UI
+- [x] **FOUND-02**: Plugin aktiviert Featured Image Support für Projekt-Logos
+- [x] **FOUND-03**: Plugin flusht Rewrite Rules nur bei Activation/Deactivation
+- [x] **FOUND-04**: Plugin hat saubere Uninstall-Routine (entfernt CPT-Daten und Optionen)
 
 ### Project Fields
 
-- [ ] **FIELD-01**: Admin kann Projekt-Name eingeben (= Post Title)
+- [x] **FIELD-01**: Admin kann Projekt-Name eingeben (= Post Title)
 - [ ] **FIELD-02**: Admin kann Projekt-Beschreibung eingeben (= Post Content oder Meta)
-- [ ] **FIELD-03**: Admin kann Projekt-Logo hochladen (= Featured Image)
+- [x] **FIELD-03**: Admin kann Projekt-Logo hochladen (= Featured Image)
 - [ ] **FIELD-04**: Admin kann GitHub-URL eingeben (Meta Field, validiert auf github.com)
 - [ ] **FIELD-05**: Admin kann optionalen One-Line-Installer eingeben (Meta Field)
-- [ ] **FIELD-06**: Admin kann Projektreihenfolge festlegen (menu_order)
+- [x] **FIELD-06**: Admin kann Projektreihenfolge festlegen (menu_order)
 
 ### Frontend Display
 
@@ -43,7 +43,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Security
 
-- [ ] **SEC-01**: Alle Meta Field Eingaben werden sanitized (sanitize_callback)
+- [x] **SEC-01**: Alle Meta Field Eingaben werden sanitized (sanitize_callback)
 - [ ] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
 - [ ] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
 - [ ] **SEC-04**: Meta Boxes verwenden Nonce-Verification
@@ -89,16 +89,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1 | Pending |
-| FOUND-02 | Phase 1 | Pending |
-| FOUND-03 | Phase 1 | Pending |
-| FOUND-04 | Phase 1 | Pending |
-| FIELD-01 | Phase 1 | Pending |
+| FOUND-01 | Phase 1 | Complete |
+| FOUND-02 | Phase 1 | Complete |
+| FOUND-03 | Phase 1 | Complete |
+| FOUND-04 | Phase 1 | Complete |
+| FIELD-01 | Phase 1 | Complete |
 | FIELD-02 | Phase 1 | Pending |
-| FIELD-03 | Phase 1 | Pending |
+| FIELD-03 | Phase 1 | Complete |
 | FIELD-04 | Phase 1 | Pending |
 | FIELD-05 | Phase 1 | Pending |
-| FIELD-06 | Phase 1 | Pending |
+| FIELD-06 | Phase 1 | Complete |
 | FRONT-01 | Phase 2 | Pending |
 | FRONT-02 | Phase 2 | Pending |
 | FRONT-03 | Phase 2 | Pending |
@@ -111,7 +111,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | API-03 | Phase 3 | Pending |
 | API-04 | Phase 3 | Pending |
 | API-05 | Phase 3 | Pending |
-| SEC-01 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Complete |
 | SEC-02 | Phase 2 | Pending |
 | SEC-03 | Phase 2 | Pending |
 | SEC-04 | Phase 1 | Pending |

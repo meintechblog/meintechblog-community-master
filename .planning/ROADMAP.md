@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Plugin bootstrap, CPT registration, capabilities, meta fields, and lifecycle hooks
+- [x] 01-01-PLAN.md — Plugin bootstrap, CPT registration, capabilities, meta fields, and lifecycle hooks
 - [ ] 01-02-PLAN.md — Meta boxes for field editing and custom admin columns for list table
 
 ### Phase 2: Frontend Display
