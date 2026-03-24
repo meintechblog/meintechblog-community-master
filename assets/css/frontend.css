@@ -129,6 +129,7 @@
 
 .cm-tile__title {
     margin: 0;
+    flex: 1;
 }
 
 /* Header links (GitHub, Blogpost, Edit) */
@@ -138,16 +139,32 @@
     align-items: baseline;
     gap: 0.75rem;
     flex-shrink: 0;
+    margin-left: auto;
 }
 
 .cm-tile__link {
-    font-size: 0.8em;
+    font-size: 0.85em;
     font-weight: 600;
     white-space: nowrap;
-    opacity: 0.65;
 }
 
-.cm-tile__link:hover {
+.cm-tile__link--github {
+    padding: 0.3rem 0.75rem;
+    border: 1px solid currentColor;
+    border-radius: 0.3rem;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.cm-tile__link--github:hover {
+    opacity: 1;
+}
+
+.cm-tile__link--blogpost {
+    opacity: 0.6;
+}
+
+.cm-tile__link--blogpost:hover {
     opacity: 1;
 }
 
