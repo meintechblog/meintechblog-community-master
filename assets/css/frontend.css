@@ -1,10 +1,58 @@
 /* Community Master - Frontend Tile Grid */
 
+/* Wrapper */
+
+.cm-wrapper {
+    max-width: 100%;
+}
+
+/* Intro section */
+
+.cm-intro {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.cm-intro p {
+    margin: 0;
+    opacity: 0.85;
+}
+
+/* Search */
+
+.cm-search {
+    margin-bottom: 1.5rem;
+}
+
+.cm-search__input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 0.5rem;
+    background: inherit;
+    color: inherit;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.cm-search__input:focus {
+    outline: none;
+    border-color: currentColor;
+    box-shadow: 0 0 0 1px currentColor;
+}
+
+.cm-search__input::placeholder {
+    opacity: 0.5;
+}
+
+/* Grid */
+
 .cm-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    padding: 1rem 0;
+    padding: 0;
 }
 
 @media (max-width: 768px) {
@@ -70,6 +118,7 @@
 .cm-tile__installer pre {
     margin: 0;
     padding: 0.75rem;
+    padding-right: 4rem;
     overflow-x: auto;
     background: rgba(128, 128, 128, 0.1);
     border-radius: 0.25rem;
@@ -107,6 +156,14 @@
     display: inline-block;
     margin-top: auto;
     font-weight: 600;
+}
+
+/* No results (search) */
+
+.cm-no-results {
+    text-align: center;
+    padding: 2rem 1rem;
+    opacity: 0.6;
 }
 
 /* Empty state */

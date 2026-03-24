@@ -12,7 +12,7 @@ $description = get_post_meta($project->ID, '_community_master_description', true
 $github_url  = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer   = get_post_meta($project->ID, '_community_master_installer', true);
 ?>
-<div class="cm-tile">
+<div class="cm-tile" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower($description)); ?>">
     <?php if (has_post_thumbnail($project->ID)) : ?>
         <div class="cm-tile__logo">
             <?php echo get_the_post_thumbnail($project->ID, 'medium'); ?>

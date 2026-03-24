@@ -1,9 +1,8 @@
 /**
- * Community Master - Copy to clipboard with visual feedback.
- *
- * Uses event delegation on document for all .cm-copy-btn clicks.
- * Primary: navigator.clipboard API. Fallback: execCommand('copy').
+ * Community Master - Copy to clipboard + instant search filter.
  */
+
+/* Copy to clipboard with visual feedback */
 document.addEventListener('click', function (e) {
     var btn = e.target.closest('.cm-copy-btn');
     if (!btn) {
@@ -25,7 +24,6 @@ document.addEventListener('click', function (e) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(showFeedback);
     } else {
-        // Fallback for non-HTTPS environments
         var textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.style.position = 'fixed';
@@ -36,4 +34,31 @@ document.addEventListener('click', function (e) {
         document.body.removeChild(textarea);
         showFeedback();
     }
+});
+
+/* Instant search filter */
+document.addEventListener('DOMContentLoaded', function () {
+    var input = document.querySelector('.cm-search__input');
+    if (!input) return;
+
+    var tiles = document.querySelectorAll('.cm-tile');
+    var noResults = document.querySelector('.cm-no-results');
+
+    input.addEventListener('input', function () {
+        var query = this.value.toLowerCase().trim();
+        var visibleCount = 0;
+
+        tiles.forEach(function (tile) {
+            var title = tile.getAttribute('data-cm-title') || '';
+            var desc = tile.getAttribute('data-cm-desc') || '';
+            var match = !query || title.indexOf(query) !== -1 || desc.indexOf(query) !== -1;
+
+            tile.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+        });
+
+        if (noResults) {
+            noResults.style.display = (visibleCount === 0 && query) ? '' : 'none';
+        }
+    });
 });
