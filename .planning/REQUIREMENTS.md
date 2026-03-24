@@ -1,0 +1,131 @@
+# Requirements: Community Master
+
+**Defined:** 2026-03-24
+**Core Value:** Blog-Leser können auf einen Blick alle Community-Projekte entdecken und direkt zu den GitHub-Repos navigieren.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Plugin Foundation
+
+- [ ] **FOUND-01**: Plugin registriert Custom Post Type "community_project" mit Admin-UI
+- [ ] **FOUND-02**: Plugin aktiviert Featured Image Support für Projekt-Logos
+- [ ] **FOUND-03**: Plugin flusht Rewrite Rules nur bei Activation/Deactivation
+- [ ] **FOUND-04**: Plugin hat saubere Uninstall-Routine (entfernt CPT-Daten und Optionen)
+
+### Project Fields
+
+- [ ] **FIELD-01**: Admin kann Projekt-Name eingeben (= Post Title)
+- [ ] **FIELD-02**: Admin kann Projekt-Beschreibung eingeben (= Post Content oder Meta)
+- [ ] **FIELD-03**: Admin kann Projekt-Logo hochladen (= Featured Image)
+- [ ] **FIELD-04**: Admin kann GitHub-URL eingeben (Meta Field, validiert auf github.com)
+- [ ] **FIELD-05**: Admin kann optionalen One-Line-Installer eingeben (Meta Field)
+- [ ] **FIELD-06**: Admin kann Projektreihenfolge festlegen (menu_order)
+
+### Frontend Display
+
+- [ ] **FRONT-01**: Shortcode `[community-master]` zeigt Projekt-Grid an
+- [ ] **FRONT-02**: Kacheln zeigen Logo, Name, Beschreibung und GitHub-Link
+- [ ] **FRONT-03**: Grid ist responsive (3 Spalten Desktop, 2 Tablet, 1 Mobile)
+- [ ] **FRONT-04**: One-Line-Installer wird nur angezeigt wenn vorhanden, in kopierbarer Code-Box
+- [ ] **FRONT-05**: Copy-to-Clipboard Button für One-Line-Installer mit visuellem Feedback
+- [ ] **FRONT-06**: Design integriert sich ins bestehende WordPress-Theme (kein eigenes Styling)
+- [ ] **FRONT-07**: Empty State zeigt hilfreiche Nachricht wenn keine Projekte existieren
+
+### REST API
+
+- [ ] **API-01**: Projekte können per REST API erstellt werden (POST)
+- [ ] **API-02**: Projekte können per REST API bearbeitet werden (PUT/PATCH)
+- [ ] **API-03**: Projekte können per REST API gelöscht werden (DELETE)
+- [ ] **API-04**: Alle Custom Meta Fields sind über REST API les- und schreibbar
+- [ ] **API-05**: REST API Endpunkte haben korrekte Permission Callbacks (capability-based)
+
+### Security
+
+- [ ] **SEC-01**: Alle Meta Field Eingaben werden sanitized (sanitize_callback)
+- [ ] **SEC-02**: Alle Frontend-Ausgaben werden escaped (esc_html, esc_url, esc_attr)
+- [ ] **SEC-03**: One-Line-Installer Output wird sicher escaped (XSS-Schutz)
+- [ ] **SEC-04**: Meta Boxes verwenden Nonce-Verification
+- [ ] **SEC-05**: REST API verwendet capability-based Permission Checks
+
+### Deployment
+
+- [ ] **DEPL-01**: Plugin ist auf meintechblog.de installiert und aktiviert
+- [ ] **DEPL-02**: Seite /community-master existiert mit eingebettetem Shortcode
+- [ ] **DEPL-03**: Erstes Projekt "IP-Cam Master" ist angelegt und sichtbar
+- [ ] **DEPL-04**: Plugin-Code liegt im GitHub Repo meintechblog/meintechblog-community-master
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Enhanced UI
+
+- **UI-01**: Gutenberg Block als Alternative zum Shortcode
+- **UI-02**: Drag-and-Drop Sortierung im Admin
+- **UI-03**: Filtermöglichkeit bei >30 Projekten
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Automatischer GitHub-Sync/Polling | Adds API complexity, caching, stale data. Manual + API reicht |
+| Multiple Layouts (Masonry, Slider) | Feature bloat. Ein Grid-Layout reicht für <20 Projekte |
+| Kategorie/Tag-Filterung | Bei <20 Projekten unnötig |
+| Eigenes Theme/Dark Mode | Plugin nutzt Theme-Styles |
+| Social Sharing Buttons | GitHub-Seite hat bereits Sharing |
+| Star/Fork/Watcher Counts | GitHub API Dependency, Caching-Aufwand |
+| Lightbox/Modal Popups | Cards linken direkt zu GitHub |
+| Import/Export | WordPress hat Built-in Export |
+| User Ratings/Kommentare | WordPress-Kommentare reichen bei Bedarf |
+| Multi-Site Support | Nur für meintechblog.de |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| FOUND-01 | — | Pending |
+| FOUND-02 | — | Pending |
+| FOUND-03 | — | Pending |
+| FOUND-04 | — | Pending |
+| FIELD-01 | — | Pending |
+| FIELD-02 | — | Pending |
+| FIELD-03 | — | Pending |
+| FIELD-04 | — | Pending |
+| FIELD-05 | — | Pending |
+| FIELD-06 | — | Pending |
+| FRONT-01 | — | Pending |
+| FRONT-02 | — | Pending |
+| FRONT-03 | — | Pending |
+| FRONT-04 | — | Pending |
+| FRONT-05 | — | Pending |
+| FRONT-06 | — | Pending |
+| FRONT-07 | — | Pending |
+| API-01 | — | Pending |
+| API-02 | — | Pending |
+| API-03 | — | Pending |
+| API-04 | — | Pending |
+| API-05 | — | Pending |
+| SEC-01 | — | Pending |
+| SEC-02 | — | Pending |
+| SEC-03 | — | Pending |
+| SEC-04 | — | Pending |
+| SEC-05 | — | Pending |
+| DEPL-01 | — | Pending |
+| DEPL-02 | — | Pending |
+| DEPL-03 | — | Pending |
+| DEPL-04 | — | Pending |
+
+**Coverage:**
+- v1 requirements: 31 total
+- Mapped to phases: 0
+- Unmapped: 31 ⚠️
+
+---
+*Requirements defined: 2026-03-24*
+*Last updated: 2026-03-24 after initial definition*
