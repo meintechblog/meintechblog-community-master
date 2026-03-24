@@ -23,6 +23,11 @@ require_once COMMUNITY_MASTER_DIR . 'includes/class-shortcode.php';
 
 Community_Master::instance();
 
+// Register 1:1 image size for project icons
+add_action('after_setup_theme', function (): void {
+    add_image_size('community-master-icon', 160, 160, true);
+});
+
 // Activation
 register_activation_hook(__FILE__, function (): void {
     CM_CPT_Project::register();
