@@ -35,5 +35,27 @@ class Community_Master {
         new CM_Meta_Boxes();
         new CM_Admin_Columns();
         new CM_Shortcode();
+
+        add_action('admin_menu', [$this, 'add_view_page_link']);
+    }
+
+    /**
+     * Add a "View Page" submenu link under Community Master.
+     */
+    public function add_view_page_link(): void {
+        global $submenu;
+
+        $page = get_page_by_path('community-master');
+        if ($page) {
+            $url = get_permalink($page);
+        } else {
+            $url = home_url('/community-master/');
+        }
+
+        $submenu['edit.php?post_type=community_project'][] = [
+            'Seite anzeigen ↗',
+            'edit_community_projects',
+            $url,
+        ];
     }
 }
