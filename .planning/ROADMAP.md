@@ -74,7 +74,11 @@ Plans:
   2. meintechblog.de/community-master displays the project grid with the shortcode
   3. IP-Cam Master project is created and visible with logo, description, GitHub link, and installer command
   4. Plugin source code is pushed to github.com/meintechblog/meintechblog-community-master
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — GitHub repo, ZIP build, v1.0.0 release, and plugin installation on meintechblog.de
+- [ ] 04-02-PLAN.md — WordPress page creation, IP-Cam Master project seeding, and visual verification
 
 ## Progress
 
@@ -86,4 +90,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Plugin Core & Admin | 0/2 | Planning complete | - |
 | 2. Frontend Display | 0/2 | Planning complete | - |
 | 3. REST API | 0/1 | Planning complete | - |
-| 4. Deployment & Launch | 0/0 | Not started | - |
+| 4. Deployment & Launch | 0/2 | Planning complete | - |
