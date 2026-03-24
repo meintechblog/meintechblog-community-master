@@ -89,43 +89,43 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | — | Pending |
-| FOUND-02 | — | Pending |
-| FOUND-03 | — | Pending |
-| FOUND-04 | — | Pending |
-| FIELD-01 | — | Pending |
-| FIELD-02 | — | Pending |
-| FIELD-03 | — | Pending |
-| FIELD-04 | — | Pending |
-| FIELD-05 | — | Pending |
-| FIELD-06 | — | Pending |
-| FRONT-01 | — | Pending |
-| FRONT-02 | — | Pending |
-| FRONT-03 | — | Pending |
-| FRONT-04 | — | Pending |
-| FRONT-05 | — | Pending |
-| FRONT-06 | — | Pending |
-| FRONT-07 | — | Pending |
-| API-01 | — | Pending |
-| API-02 | — | Pending |
-| API-03 | — | Pending |
-| API-04 | — | Pending |
-| API-05 | — | Pending |
-| SEC-01 | — | Pending |
-| SEC-02 | — | Pending |
-| SEC-03 | — | Pending |
-| SEC-04 | — | Pending |
-| SEC-05 | — | Pending |
-| DEPL-01 | — | Pending |
-| DEPL-02 | — | Pending |
-| DEPL-03 | — | Pending |
-| DEPL-04 | — | Pending |
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| FOUND-04 | Phase 1 | Pending |
+| FIELD-01 | Phase 1 | Pending |
+| FIELD-02 | Phase 1 | Pending |
+| FIELD-03 | Phase 1 | Pending |
+| FIELD-04 | Phase 1 | Pending |
+| FIELD-05 | Phase 1 | Pending |
+| FIELD-06 | Phase 1 | Pending |
+| FRONT-01 | Phase 2 | Pending |
+| FRONT-02 | Phase 2 | Pending |
+| FRONT-03 | Phase 2 | Pending |
+| FRONT-04 | Phase 2 | Pending |
+| FRONT-05 | Phase 2 | Pending |
+| FRONT-06 | Phase 2 | Pending |
+| FRONT-07 | Phase 2 | Pending |
+| API-01 | Phase 3 | Pending |
+| API-02 | Phase 3 | Pending |
+| API-03 | Phase 3 | Pending |
+| API-04 | Phase 3 | Pending |
+| API-05 | Phase 3 | Pending |
+| SEC-01 | Phase 1 | Pending |
+| SEC-02 | Phase 2 | Pending |
+| SEC-03 | Phase 2 | Pending |
+| SEC-04 | Phase 1 | Pending |
+| SEC-05 | Phase 3 | Pending |
+| DEPL-01 | Phase 4 | Pending |
+| DEPL-02 | Phase 4 | Pending |
+| DEPL-03 | Phase 4 | Pending |
+| DEPL-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 31 total
-- Mapped to phases: 0
-- Unmapped: 31 ⚠️
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after initial definition*
+*Last updated: 2026-03-24 after roadmap creation*
