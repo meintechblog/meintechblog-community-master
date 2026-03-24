@@ -174,13 +174,30 @@ class CM_CPT_Project {
                 'desc'      => 'One-line install command',
                 'sanitize'  => 'sanitize_text_field',
             ],
-            'community_master_blogpost_id' => [
-                'meta_key'  => '_community_master_blogpost_id',
-                'type'      => 'integer',
-                'desc'      => 'Linked blog post ID',
-                'sanitize'  => 'absint',
-            ],
         ];
+
+        // Blogpost IDs (array field, handled separately)
+        register_rest_field( 'community_project', 'community_master_blogpost_ids', [
+            'get_callback'    => function ( $post ) {
+                $ids = get_post_meta( $post['id'], '_community_master_blogpost_ids', true );
+                if ( ! is_array( $ids ) ) {
+                    $old = get_post_meta( $post['id'], '_community_master_blogpost_id', true );
+                    return $old ? [ (int) $old ] : [];
+                }
+                return array_map( 'intval', $ids );
+            },
+            'update_callback' => function ( $value, $post ) {
+                $ids = array_map( 'absint', (array) $value );
+                $ids = array_filter( $ids );
+                update_post_meta( $post->ID, '_community_master_blogpost_ids', $ids );
+            },
+            'schema'          => [
+                'type'        => 'array',
+                'items'       => [ 'type' => 'integer' ],
+                'description' => 'Linked blog post IDs',
+                'context'     => [ 'view', 'edit' ],
+            ],
+        ] );
 
         foreach ( $meta_fields as $field_name => $config ) {
             register_rest_field( 'community_project', $field_name, [

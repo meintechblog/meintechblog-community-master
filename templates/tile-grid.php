@@ -3,16 +3,15 @@
 defined('ABSPATH') || exit;
 
 /**
- * Template: Tile grid wrapper with intro and search.
+ * Template: Tile grid wrapper with search.
+ *
+ * Intro text is managed via the page content in the WordPress editor
+ * (write text above the [community-master] shortcode).
  *
  * @var WP_Post[] $projects Available from the shortcode render method.
  */
 ?>
 <div class="cm-wrapper">
-    <div class="cm-intro">
-        <p><?php echo esc_html(get_option('community_master_intro', 'Hier findest du unsere Community-Projekte — Open-Source-Tools zum Selbsthosten. Jedes Projekt hat ein eigenes GitHub-Repository mit Dokumentation und One-Line-Installer.')); ?></p>
-    </div>
-
     <div class="cm-search">
         <input type="text" class="cm-search__input" placeholder="<?php echo esc_attr__('Projekt suchen…', 'community-master'); ?>" aria-label="<?php echo esc_attr__('Projekte filtern', 'community-master'); ?>">
     </div>
