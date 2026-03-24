@@ -11,10 +11,7 @@ defined('ABSPATH') || exit;
 <div class="cm-wrapper">
     <div class="cm-toolbar">
         <input type="text" class="cm-search__input" placeholder="<?php echo esc_attr__('Projekt suchen…', 'community-master'); ?>" aria-label="<?php echo esc_attr__('Projekte filtern', 'community-master'); ?>">
-        <select class="cm-sort__select" aria-label="<?php echo esc_attr__('Sortierung', 'community-master'); ?>">
-            <option value="newest"><?php echo esc_html__('Neueste zuerst', 'community-master'); ?></option>
-            <option value="name"><?php echo esc_html__('Name (A–Z)', 'community-master'); ?></option>
-        </select>
+        <button type="button" class="cm-sort__btn" data-sort="newest" aria-label="<?php echo esc_attr__('Sortierung ändern', 'community-master'); ?>"><?php echo esc_html__('Neueste zuerst', 'community-master'); ?> ↕</button>
     </div>
 
     <div class="cm-grid">

@@ -37,7 +37,7 @@ document.addEventListener('click', function (e) {
 /* Search + Sort */
 (function init() {
     var input = document.querySelector('.cm-search__input');
-    var sortSelect = document.querySelector('.cm-sort__select');
+    var sortBtn = document.querySelector('.cm-sort__btn');
     var grid = document.querySelector('.cm-grid');
     if (!input || !grid) {
         if (document.readyState === 'loading') {
@@ -54,7 +54,7 @@ document.addEventListener('click', function (e) {
 
     function filterAndSort() {
         var query = (input.value || '').toLowerCase().trim();
-        var sort = sortSelect ? sortSelect.value : 'newest';
+        var sort = sortBtn ? sortBtn.getAttribute('data-sort') : 'newest';
         var tiles = getTiles();
         var visibleCount = 0;
 
@@ -91,5 +91,17 @@ document.addEventListener('click', function (e) {
     }
 
     input.addEventListener('input', filterAndSort);
-    if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
+    if (sortBtn) {
+        var sortModes = [
+            { key: 'newest', label: 'Neueste zuerst ↕' },
+            { key: 'name', label: 'Name (A–Z) ↕' }
+        ];
+        sortBtn.addEventListener('click', function () {
+            var current = sortBtn.getAttribute('data-sort');
+            var nextIndex = current === 'newest' ? 1 : 0;
+            sortBtn.setAttribute('data-sort', sortModes[nextIndex].key);
+            sortBtn.textContent = sortModes[nextIndex].label;
+            filterAndSort();
+        });
+    }
 })();
