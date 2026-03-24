@@ -8,7 +8,7 @@ defined('ABSPATH') || exit;
  * @var WP_Post $project Available from the tile-grid foreach loop.
  */
 
-$description = get_post_meta($project->ID, '_community_master_description', true);
+$description = $project->post_content;
 $github_url  = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer   = get_post_meta($project->ID, '_community_master_installer', true);
 $can_edit    = current_user_can('edit_community_project', $project->ID);
@@ -30,7 +30,7 @@ $has_logo    = has_post_thumbnail($project->ID);
         </div>
 
         <?php if ($description) : ?>
-            <div class="cm-tile__description"><?php echo wp_kses_post($description); ?></div>
+            <div class="cm-tile__description"><?php echo wp_kses_post(do_blocks(wpautop($description))); ?></div>
         <?php endif; ?>
 
         <?php if ($installer) : ?>

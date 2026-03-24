@@ -20,15 +20,6 @@ class CM_Meta_Boxes {
      */
     public function register_meta_boxes(): void {
         add_meta_box(
-            'community_master_description',
-            __('Beschreibung', 'community-master'),
-            [$this, 'render_description_meta_box'],
-            'community_project',
-            'normal',
-            'high'
-        );
-
-        add_meta_box(
             'community_master_fields',
             __('Project Details', 'community-master'),
             [$this, 'render_fields_meta_box'],
@@ -45,21 +36,6 @@ class CM_Meta_Boxes {
             'side',
             'default'
         );
-    }
-
-    /**
-     * Render the Description meta box with wp_editor (WYSIWYG).
-     */
-    public function render_description_meta_box(WP_Post $post): void {
-        $description = get_post_meta($post->ID, '_community_master_description', true);
-
-        wp_editor($description, 'community_master_description_editor', [
-            'textarea_name' => '_community_master_description',
-            'media_buttons' => true,
-            'textarea_rows' => 10,
-            'teeny'         => false,
-            'quicktags'     => true,
-        ]);
     }
 
     /**
@@ -121,13 +97,7 @@ class CM_Meta_Boxes {
             return;
         }
 
-        // 4. Sanitize and save description (HTML allowed via wp_kses_post).
-        if (isset($_POST['_community_master_description'])) {
-            $description = wp_kses_post(wp_unslash($_POST['_community_master_description']));
-            update_post_meta($post_id, '_community_master_description', $description);
-        }
-
-        // 5. Sanitize and save GitHub URL (FIELD-04: reject non-github.com URLs).
+        // 4. Sanitize and save GitHub URL (FIELD-04: reject non-github.com URLs).
         if (isset($_POST['_community_master_github_url'])) {
             $github_url = esc_url_raw(wp_unslash($_POST['_community_master_github_url']));
 
