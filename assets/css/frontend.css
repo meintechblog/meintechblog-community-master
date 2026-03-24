@@ -78,21 +78,53 @@
     transition: box-shadow 0.2s ease;
 }
 
+.cm-tile--has-logo {
+    flex-direction: row;
+    gap: 1.25rem;
+}
+
 .cm-tile:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo */
+/* Logo (left side) */
 
 .cm-tile__logo {
-    text-align: center;
-    margin-bottom: 1rem;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
 }
 
 .cm-tile__logo img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.25rem;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* Body (right side of logo) */
+
+.cm-tile__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .cm-tile--has-logo {
+        flex-direction: column;
+    }
+
+    .cm-tile__logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cm-tile__logo img {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 /* Header (title + edit link) */
