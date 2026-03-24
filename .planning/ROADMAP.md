@@ -29,7 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Admin can reorder projects via menu_order field
   4. All meta field inputs are sanitized on save and meta box forms use nonce verification
   5. Plugin deactivation and uninstall cleanly remove rewrite rules and CPT data
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Plugin bootstrap, CPT registration, capabilities, meta fields, and lifecycle hooks
+- [ ] 01-02-PLAN.md — Meta boxes for field editing and custom admin columns for list table
 
 ### Phase 2: Frontend Display
 **Goal**: Visitors can browse all community projects as a visually appealing tile grid on any WordPress page
@@ -73,7 +77,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Plugin Core & Admin | 0/0 | Not started | - |
+| 1. Plugin Core & Admin | 0/2 | Planning complete | - |
 | 2. Frontend Display | 0/0 | Not started | - |
 | 3. REST API | 0/0 | Not started | - |
 | 4. Deployment & Launch | 0/0 | Not started | - |
