@@ -5,7 +5,7 @@
  * Version:     1.0.0
  * Author:      meintechblog
  * Text Domain: community-master
- * Requires PHP: 8.2
+ * Requires PHP: 7.4
  * Requires at least: 6.6
  */
 

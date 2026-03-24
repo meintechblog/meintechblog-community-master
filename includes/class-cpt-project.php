@@ -47,7 +47,7 @@ class CM_CPT_Project {
             'single'            => true,
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_textarea_field',
-            'auth_callback'     => fn() => current_user_can('edit_community_projects'),
+            'auth_callback'     => function () { return current_user_can('edit_community_projects'); },
         ]);
 
         register_post_meta('community_project', '_community_master_github_url', [
@@ -55,7 +55,7 @@ class CM_CPT_Project {
             'single'            => true,
             'type'              => 'string',
             'sanitize_callback' => 'esc_url_raw',
-            'auth_callback'     => fn() => current_user_can('edit_community_projects'),
+            'auth_callback'     => function () { return current_user_can('edit_community_projects'); },
         ]);
 
         register_post_meta('community_project', '_community_master_installer', [
@@ -63,7 +63,7 @@ class CM_CPT_Project {
             'single'            => true,
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'auth_callback'     => fn() => current_user_can('edit_community_projects'),
+            'auth_callback'     => function () { return current_user_can('edit_community_projects'); },
         ]);
     }
 
