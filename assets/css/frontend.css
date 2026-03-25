@@ -180,6 +180,11 @@
     color: #fff;
 }
 
+.cm-badge--wordpress {
+    background: #21759b;
+    color: #fff;
+}
+
 /* Header links (GitHub, Blogpost, Edit) */
 
 .cm-tile__header-links {

@@ -11,7 +11,16 @@ defined('ABSPATH') || exit;
 $description  = $project->post_content;
 $github_url   = get_post_meta($project->ID, '_community_master_github_url', true);
 $installer    = get_post_meta($project->ID, '_community_master_installer', true);
-$proxmox      = get_post_meta($project->ID, '_community_master_proxmox', true);
+$tags = [
+    'proxmox'   => ['label' => 'Proxmox',   'title' => 'Setzt Proxmox VE voraus'],
+    'wordpress' => ['label' => 'WordPress', 'title' => 'WordPress Plugin'],
+];
+$active_tags = [];
+foreach ($tags as $key => $tag) {
+    if (get_post_meta($project->ID, '_community_master_tag_' . $key, true)) {
+        $active_tags[$key] = $tag;
+    }
+}
 $can_edit     = current_user_can('edit_community_project', $project->ID);
 $has_logo     = has_post_thumbnail($project->ID);
 
@@ -47,9 +56,9 @@ $bp_count = count($blogposts);
         <div class="cm-tile__header">
             <h3 class="cm-tile__title">
                 <?php echo esc_html(get_the_title($project->ID)); ?>
-                <?php if ($proxmox) : ?>
-                    <span class="cm-badge cm-badge--proxmox" title="<?php esc_attr_e('Setzt Proxmox VE voraus', 'community-master'); ?>">Proxmox</span>
-                <?php endif; ?>
+                <?php foreach ($active_tags as $key => $tag) : ?>
+                    <span class="cm-badge cm-badge--<?php echo esc_attr($key); ?>" title="<?php echo esc_attr($tag['title']); ?>"><?php echo esc_html($tag['label']); ?></span>
+                <?php endforeach; ?>
             </h3>
             <div class="cm-tile__header-links">
                 <?php if ($github_url) : ?>

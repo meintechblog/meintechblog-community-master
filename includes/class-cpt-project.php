@@ -176,21 +176,33 @@ class CM_CPT_Project {
             ],
         ];
 
-        // Proxmox flag
-        register_rest_field( 'community_project', 'community_master_proxmox', [
+        // Tags (badges)
+        register_rest_field( 'community_project', 'community_master_tags', [
             'get_callback'    => function ( $post ) {
-                return (bool) get_post_meta( $post['id'], '_community_master_proxmox', true );
+                $all = ['proxmox', 'wordpress'];
+                $active = [];
+                foreach ( $all as $tag ) {
+                    if ( get_post_meta( $post['id'], '_community_master_tag_' . $tag, true ) ) {
+                        $active[] = $tag;
+                    }
+                }
+                return $active;
             },
             'update_callback' => function ( $value, $post ) {
-                if ( $value ) {
-                    update_post_meta( $post->ID, '_community_master_proxmox', '1' );
-                } else {
-                    delete_post_meta( $post->ID, '_community_master_proxmox' );
+                $all = ['proxmox', 'wordpress'];
+                $selected = is_array( $value ) ? $value : [];
+                foreach ( $all as $tag ) {
+                    if ( in_array( $tag, $selected, true ) ) {
+                        update_post_meta( $post->ID, '_community_master_tag_' . $tag, '1' );
+                    } else {
+                        delete_post_meta( $post->ID, '_community_master_tag_' . $tag );
+                    }
                 }
             },
             'schema'          => [
-                'type'        => 'boolean',
-                'description' => 'Proxmox integration flag',
+                'type'        => 'array',
+                'items'       => [ 'type' => 'string' ],
+                'description' => 'Active tag badges (proxmox, wordpress)',
                 'context'     => [ 'view', 'edit' ],
             ],
         ] );

@@ -47,7 +47,6 @@ class CM_Meta_Boxes {
 
         $github_url = get_post_meta($post->ID, '_community_master_github_url', true);
         $installer  = get_post_meta($post->ID, '_community_master_installer', true);
-        $proxmox    = get_post_meta($post->ID, '_community_master_proxmox', true);
         ?>
         <table class="form-table">
             <tr>
@@ -65,11 +64,20 @@ class CM_Meta_Boxes {
             <tr>
                 <th><?php esc_html_e('Tags', 'community-master'); ?></th>
                 <td>
-                    <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
-                        <input type="checkbox" name="_community_master_proxmox" value="1" <?php checked($proxmox, '1'); ?> />
-                        <?php esc_html_e('Proxmox-Integration', 'community-master'); ?>
-                    </label>
-                    <p class="description"><?php esc_html_e('Zeigt ein Proxmox-Badge beim Eintrag an.', 'community-master'); ?></p>
+                    <?php
+                    $tags = [
+                        'proxmox'   => __('Proxmox', 'community-master'),
+                        'wordpress' => __('WordPress', 'community-master'),
+                    ];
+                    foreach ($tags as $tag_key => $tag_label) :
+                        $checked = get_post_meta($post->ID, '_community_master_tag_' . $tag_key, true);
+                        ?>
+                        <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;margin-right:16px;">
+                            <input type="checkbox" name="_community_master_tags[]" value="<?php echo esc_attr($tag_key); ?>" <?php checked($checked, '1'); ?> />
+                            <?php echo esc_html($tag_label); ?>
+                        </label>
+                    <?php endforeach; ?>
+                    <p class="description"><?php esc_html_e('Zeigt Badges beim Eintrag an.', 'community-master'); ?></p>
                 </td>
             </tr>
         </table>
@@ -256,11 +264,22 @@ class CM_Meta_Boxes {
             update_post_meta($post_id, '_community_master_installer', $installer);
         }
 
-        // Proxmox tag
-        if (isset($_POST['_community_master_proxmox'])) {
-            update_post_meta($post_id, '_community_master_proxmox', '1');
-        } else {
-            delete_post_meta($post_id, '_community_master_proxmox');
+        // Tags (badges)
+        $all_tags = ['proxmox', 'wordpress'];
+        $selected = isset($_POST['_community_master_tags']) ? array_map('sanitize_key', (array) $_POST['_community_master_tags']) : [];
+        foreach ($all_tags as $tag) {
+            if (in_array($tag, $selected, true)) {
+                update_post_meta($post_id, '_community_master_tag_' . $tag, '1');
+                // Keep legacy field for backward compat
+                if ($tag === 'proxmox') {
+                    update_post_meta($post_id, '_community_master_proxmox', '1');
+                }
+            } else {
+                delete_post_meta($post_id, '_community_master_tag_' . $tag);
+                if ($tag === 'proxmox') {
+                    delete_post_meta($post_id, '_community_master_proxmox');
+                }
+            }
         }
 
         // Blogpost IDs (multiple)
