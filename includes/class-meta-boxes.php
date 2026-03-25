@@ -11,6 +11,7 @@ class CM_Meta_Boxes {
         add_action('add_meta_boxes', [$this, 'register_meta_boxes']);
         add_action('save_post_community_project', [$this, 'save_meta'], 10, 2);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
+        add_filter('post_updated_messages', [$this, 'updated_messages']);
     }
 
     public function enqueue_admin_scripts(string $hook): void {
@@ -19,6 +20,31 @@ class CM_Meta_Boxes {
             return;
         }
         wp_enqueue_script('jquery');
+    }
+
+    /**
+     * Custom update messages with link to frontend page.
+     */
+    public function updated_messages(array $messages): array {
+        $page = get_page_by_path('community-master');
+        $url = $page ? get_permalink($page) : home_url('/community-master/');
+        $link = '<a href="' . esc_url($url) . '" target="_blank">Auf der Seite ansehen →</a>';
+
+        $messages['community_project'] = [
+            0  => '',
+            1  => 'Projekt aktualisiert. ' . $link,
+            2  => 'Feld aktualisiert.',
+            3  => 'Feld gelöscht.',
+            4  => 'Projekt aktualisiert.',
+            5  => '',
+            6  => 'Projekt veröffentlicht. ' . $link,
+            7  => 'Projekt gespeichert.',
+            8  => 'Projekt eingereicht.',
+            9  => 'Projekt geplant.',
+            10 => 'Entwurf aktualisiert.',
+        ];
+
+        return $messages;
     }
 
     public function register_meta_boxes(): void {
