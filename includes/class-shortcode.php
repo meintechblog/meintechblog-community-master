@@ -35,6 +35,10 @@ class CM_Shortcode {
     /**
      * Render the [community-master] shortcode output.
      *
+     * Dispatches to single-project view when the community_project_slug query
+     * var is set (deep-link route: /community-master/<slug>/), otherwise
+     * renders the full grid.
+     *
      * @param array<string, string>|string $atts Shortcode attributes.
      * @return string Rendered HTML.
      */
@@ -42,6 +46,18 @@ class CM_Shortcode {
         wp_enqueue_style('community-master-frontend');
         wp_enqueue_script('community-master-copy');
 
+        $slug = get_query_var('community_project_slug');
+        if (is_string($slug) && $slug !== '') {
+            return $this->render_single($slug);
+        }
+
+        return $this->render_grid();
+    }
+
+    /**
+     * Render the full tile grid.
+     */
+    private function render_grid(): string {
         $projects = get_posts([
             'post_type'      => 'community_project',
             'posts_per_page' => -1,
@@ -58,6 +74,43 @@ class CM_Shortcode {
 
         ob_start();
         include COMMUNITY_MASTER_DIR . 'templates/tile-grid.php';
+        return (string) ob_get_clean();
+    }
+
+    /**
+     * Render a single project matched by slug, or a not-found fallback.
+     */
+    private function render_single(string $slug): string {
+        $matches = get_posts([
+            'post_type'      => 'community_project',
+            'name'           => $slug,
+            'posts_per_page' => 1,
+            'post_status'    => 'publish',
+        ]);
+
+        $back_url  = home_url('/community-master/');
+        $back_link = '<p class="cm-single__back"><a href="' . esc_url($back_url) . '">&larr; '
+            . esc_html__('Alle Projekte', 'community-master') . '</a></p>';
+
+        if (empty($matches)) {
+            status_header(404);
+            return '<div class="cm-wrapper cm-wrapper--single">'
+                . $back_link
+                . '<div class="cm-empty-state">'
+                . esc_html__('Projekt nicht gefunden.', 'community-master')
+                . '</div>'
+                . '</div>';
+        }
+
+        $project = $matches[0];
+
+        ob_start();
+        echo '<div class="cm-wrapper cm-wrapper--single">';
+        echo $back_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed markup, URL is esc_url()'d above
+        echo '<div class="cm-grid cm-grid--single">';
+        include COMMUNITY_MASTER_DIR . 'templates/single-tile.php';
+        echo '</div>';
+        echo '</div>';
         return (string) ob_get_clean();
     }
 }
