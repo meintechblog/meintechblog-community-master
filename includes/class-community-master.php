@@ -31,7 +31,9 @@ class Community_Master {
         add_action('init', [CM_CPT_Project::class, 'register_meta_fields']);
         add_action('init', [self::class, 'register_rewrites']);
         add_filter('query_vars', [self::class, 'register_query_vars']);
-        add_action('plugins_loaded', [self::class, 'maybe_flush_rewrites']);
+        // Flush AFTER register_rewrites on init — plugins_loaded was too early
+        // (rule not yet added, so flush persisted an empty ruleset).
+        add_action('init', [self::class, 'maybe_flush_rewrites'], 99);
         add_filter('rest_pre_insert_community_project', [CM_CPT_Project::class, 'validate_rest_github_url'], 10, 2);
         add_action('rest_api_init', [CM_CPT_Project::class, 'register_rest_fields']);
         add_action('rest_api_init', [CM_REST_Self_Update::class, 'register_routes']);
