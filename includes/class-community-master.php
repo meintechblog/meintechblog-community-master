@@ -34,6 +34,7 @@ class Community_Master {
         add_action('plugins_loaded', [self::class, 'maybe_flush_rewrites']);
         add_filter('rest_pre_insert_community_project', [CM_CPT_Project::class, 'validate_rest_github_url'], 10, 2);
         add_action('rest_api_init', [CM_CPT_Project::class, 'register_rest_fields']);
+        add_action('rest_api_init', [CM_REST_Self_Update::class, 'register_routes']);
 
         new CM_Meta_Boxes();
         new CM_Admin_Columns();

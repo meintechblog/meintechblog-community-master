@@ -11,7 +11,7 @@
 
 defined('ABSPATH') || exit;
 
-define('COMMUNITY_MASTER_VERSION', '1.3.0');
+define('COMMUNITY_MASTER_VERSION', '1.4.0');
 define('COMMUNITY_MASTER_FILE', __FILE__);
 define('COMMUNITY_MASTER_DIR', plugin_dir_path(__FILE__));
 
@@ -20,6 +20,7 @@ require_once COMMUNITY_MASTER_DIR . 'includes/class-cpt-project.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-meta-boxes.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-admin-columns.php';
 require_once COMMUNITY_MASTER_DIR . 'includes/class-shortcode.php';
+require_once COMMUNITY_MASTER_DIR . 'includes/class-rest-self-update.php';
 
 Community_Master::instance();
 
