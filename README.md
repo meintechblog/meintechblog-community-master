@@ -6,6 +6,8 @@ WordPress-Plugin zur Verwaltung und Darstellung von Community-Projekten. Entwick
 
 ### Frontend
 - **Projekt-Kacheln** — Jedes Projekt als Card mit Logo, Beschreibung, GitHub-Link und optionalem One-Line-Installer
+- **Deep-Links** — `/community-master/<slug>/` zeigt eine Einzelansicht des Projekts (`<slug>` = `post_name`); unbekannte Slugs liefern HTTP 404 mit "Alle Projekte"-Back-Link
+- **Klickbare Kacheln** — Projekt-Titel und Logo im Grid verlinken auf die Einzelansicht
 - **Instant-Suche** — Filtert Projekte live beim Tippen
 - **Sortierung** — Toggle-Button zwischen "Neueste zuerst" und "Name (A–Z)"
 - **Copy-to-Clipboard** — One-Line-Installer mit einem Klick kopieren
@@ -27,6 +29,24 @@ WordPress-Plugin zur Verwaltung und Darstellung von Community-Projekten. Entwick
 - Alle Felder (GitHub URL, Installer, Tags, Blogpost-IDs) über REST les- und schreibbar
 - Authentifizierung via WordPress Application Passwords
 - GitHub URL Validierung auch bei API-Zugriffen
+
+### Self-Update (Plugin aktualisiert sich selbst von GitHub)
+- `GET /community-master/v1/update-check` — meldet installed / latest / update_available
+- `POST /community-master/v1/self-update` — lädt das neueste GitHub-Release-ZIP, installiert via Core `Plugin_Upgrader` (Maintenance-Mode, Rollback bei Fehler), aktiviert, flushed Rewrite-Rules
+- Optional `{ "version": "vX.Y.Z" }` für Target-Release
+- Auth: Capability `update_plugins` (Application Password reicht)
+- Schutz: Host-Allowlist gegen Nicht-GitHub-URLs + Transient-Lock gegen parallele Upgrades
+
+### Daten-Recovery (aus UpdraftPlus-Backups)
+- `GET /community-master/v1/restore/backups` — listet vorhandene `-db.gz`-Backups in `wp-content/updraft/`
+- `POST /community-master/v1/restore/community-projects` — extrahiert `community_project`-Posts + Meta aus dem neuesten Backup und legt sie neu an (idempotent: existierende Slugs werden übersprungen)
+- Unterstützt `{ "dry_run": true }` für Vorschau ohne DB-Schreibvorgang
+- Auth: Capability `manage_options`
+
+### Sichere Deinstallation
+- `uninstall.php` löscht **standardmäßig keine** Projekt-Daten — nur Capabilities werden entfernt
+- Opt-in: `update_option('community_master_delete_data_on_uninstall', '1')` aktiviert harte Löschung
+- Verhindert Datenverlust beim Löschen von Plugin-Duplikaten (gleiche `uninstall.php` wie aktive Kopie)
 
 ### Sicherheit
 - Input-Sanitization auf allen Feldern (`sanitize_text_field`, `esc_url_raw`, `wp_kses_post`)
@@ -116,6 +136,56 @@ curl -u "user:app-password" \
 | `community_master_tags` | string[] | Aktive Tags (`"proxmox"`, `"wordpress"`) |
 | `community_master_blogpost_ids` | integer[] | IDs verknüpfter Blogposts |
 | `menu_order` | integer | Sortierreihenfolge |
+
+## Plugin-Eigene REST-Endpoints
+
+Namespace: `community-master/v1`. Alle Endpoints erfordern WordPress-Authentifizierung (Application Password empfohlen).
+
+### Update-Check
+
+```bash
+curl -u "user:app-password" \
+  "https://example.com/wp-json/community-master/v1/update-check"
+# → { "installed": "1.4.6", "latest": "1.4.6", "update_available": false, ... }
+```
+
+### Self-Update
+
+```bash
+curl -u "user:app-password" -X POST \
+  "https://example.com/wp-json/community-master/v1/self-update"
+# → { "success": true, "old_version": "1.4.5", "new_version": "1.4.6", "messages": [...] }
+```
+
+### Backup-Liste
+
+```bash
+curl -u "user:app-password" \
+  "https://example.com/wp-json/community-master/v1/restore/backups"
+# → { "backups": [{ "filename": "...", "size": ..., "modified": "...", "encrypted": false }, ...] }
+```
+
+### Community-Projekte aus Backup wiederherstellen
+
+```bash
+# Dry-run (zeigt was wiederhergestellt würde)
+curl -u "user:app-password" -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"dry_run": true}' \
+  "https://example.com/wp-json/community-master/v1/restore/community-projects"
+
+# Echter Restore aus dem neuesten Backup
+curl -u "user:app-password" -X POST \
+  "https://example.com/wp-json/community-master/v1/restore/community-projects"
+```
+
+## URL-Struktur
+
+| URL | Inhalt |
+|-----|--------|
+| `/community-master/` | Grid aller veröffentlichten Projekte |
+| `/community-master/<slug>/` | Einzelansicht eines Projekts (`<slug>` = `post_name`) |
+| `/community-master/<slug>/` (unbekannt) | HTTP 404 mit "Alle Projekte"-Back-Link |
 
 ## Tech Stack
 
