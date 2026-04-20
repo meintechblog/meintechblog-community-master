@@ -18,14 +18,39 @@ defined('ABSPATH') || exit;
  */
 class CM_REST_Restore {
 
-    private const POSTS_TABLE    = 'wp_posts';
-    private const POSTMETA_TABLE = 'wp_postmeta';
+    private static function posts_table(): string {
+        global $wpdb;
+        return $wpdb->posts;
+    }
+
+    private static function postmeta_table(): string {
+        global $wpdb;
+        return $wpdb->postmeta;
+    }
 
     public static function register_routes(): void {
         register_rest_route('community-master/v1', '/restore/backups', [
             'methods'             => 'GET',
             'callback'            => [self::class, 'list_backups'],
             'permission_callback' => [self::class, 'permission_check'],
+        ]);
+
+        register_rest_route('community-master/v1', '/restore/debug', [
+            'methods'             => 'GET',
+            'callback'            => [self::class, 'handle_debug'],
+            'permission_callback' => [self::class, 'permission_check'],
+            'args'                => [
+                'backup_file' => [
+                    'type'              => 'string',
+                    'required'          => false,
+                    'sanitize_callback' => 'sanitize_file_name',
+                ],
+                'grep' => [
+                    'type'     => 'string',
+                    'required' => false,
+                    'default'  => 'community_project',
+                ],
+            ],
         ]);
 
         register_rest_route('community-master/v1', '/restore/community-projects', [
@@ -82,6 +107,81 @@ class CM_REST_Restore {
         return new WP_REST_Response([
             'updraft_dir' => $dir,
             'backups'     => $entries,
+        ]);
+    }
+
+    /**
+     * GET /restore/debug — peek into a backup file to see the SQL format.
+     * Returns: first 4 KB of decompressed content + any lines matching grep
+     * (default: "community_project") with line counts.
+     */
+    public static function handle_debug(WP_REST_Request $request): WP_REST_Response|WP_Error {
+        $dir = self::updraft_dir();
+        if (is_wp_error($dir)) return $dir;
+
+        $backup = $request->get_param('backup_file');
+        if ($backup) {
+            $path = $dir . '/' . $backup;
+        } else {
+            $files = self::find_db_backups($dir);
+            $files = array_values(array_filter($files, static fn($f) => !str_ends_with($f, '.crypt')));
+            if (empty($files)) return new WP_Error('no_backup', 'No backups found', ['status' => 404]);
+            $path = $files[0];
+        }
+        if (!is_file($path)) return new WP_Error('not_found', 'File not found', ['status' => 404]);
+
+        $grep = (string) $request->get_param('grep');
+
+        $fh = gzopen($path, 'rb');
+        if (!$fh) return new WP_Error('gz_open_fail', 'Cannot open', ['status' => 500]);
+
+        $head           = '';
+        $matches        = [];
+        $line_count     = 0;
+        $insert_samples = []; // capture first occurrence of each INSERT INTO `xxx` table
+        $seen_tables    = [];
+
+        while (!gzeof($fh)) {
+            $line = gzgets($fh, 16 * 1024 * 1024);
+            if ($line === false) break;
+            $line_count++;
+
+            if (strlen($head) < 4096) {
+                $head .= $line;
+            }
+
+            // Record first-seen sample for each INSERT INTO `table_name`
+            if (preg_match('/^\s*INSERT\s+INTO\s+`?([a-zA-Z0-9_]+)`?\s/i', $line, $m)) {
+                $table = strtolower($m[1]);
+                if (!isset($seen_tables[$table])) {
+                    $seen_tables[$table]     = 1;
+                    $insert_samples[$table]  = substr($line, 0, 400);
+                } else {
+                    $seen_tables[$table]++;
+                }
+            }
+
+            if ($grep !== '' && stripos($line, $grep) !== false && count($matches) < 10) {
+                $matches[] = [
+                    'line_no' => $line_count,
+                    'excerpt' => substr($line, 0, 500),
+                ];
+            }
+        }
+        gzclose($fh);
+
+        global $wpdb;
+        return new WP_REST_Response([
+            'backup_file'    => basename($path),
+            'wpdb_prefix'    => $wpdb->prefix,
+            'posts_table'    => self::posts_table(),
+            'postmeta_table' => self::postmeta_table(),
+            'total_lines'    => $line_count,
+            'head_4kb'       => substr($head, 0, 4096),
+            'insert_counts'  => $seen_tables,
+            'insert_samples' => $insert_samples,
+            'grep'           => $grep,
+            'grep_matches'   => $matches,
         ]);
     }
 
@@ -270,7 +370,7 @@ class CM_REST_Restore {
         while (!gzeof($fh)) {
             $line = gzgets($fh, 16 * 1024 * 1024); // up to 16MB per extended-insert line
             if ($line === false) break;
-            if (strpos($line, 'INSERT INTO `' . self::POSTS_TABLE . '`') !== 0) {
+            if (!preg_match('/^\s*INSERT\s+INTO\s+`?' . preg_quote(self::posts_table(), '/') . '`?\s/i', $line)) {
                 continue;
             }
             $tuples = self::parse_insert_values($line);
@@ -322,7 +422,7 @@ class CM_REST_Restore {
         while (!gzeof($fh)) {
             $line = gzgets($fh, 16 * 1024 * 1024);
             if ($line === false) break;
-            if (strpos($line, 'INSERT INTO `' . self::POSTMETA_TABLE . '`') !== 0) {
+            if (!preg_match('/^\s*INSERT\s+INTO\s+`?' . preg_quote(self::postmeta_table(), '/') . '`?\s/i', $line)) {
                 continue;
             }
             $tuples = self::parse_insert_values($line);
