@@ -29,6 +29,9 @@ class Community_Master {
     private function __construct() {
         add_action('init', [CM_CPT_Project::class, 'register']);
         add_action('init', [CM_CPT_Project::class, 'register_meta_fields']);
+        add_action('init', [self::class, 'register_rewrites']);
+        add_filter('query_vars', [self::class, 'register_query_vars']);
+        add_action('plugins_loaded', [self::class, 'maybe_flush_rewrites']);
         add_filter('rest_pre_insert_community_project', [CM_CPT_Project::class, 'validate_rest_github_url'], 10, 2);
         add_action('rest_api_init', [CM_CPT_Project::class, 'register_rest_fields']);
 
@@ -39,6 +42,40 @@ class Community_Master {
         add_action('admin_menu', [$this, 'add_view_page_link']);
         add_action('admin_menu', [$this, 'add_settings_page']);
         add_action('admin_init', [$this, 'register_settings']);
+    }
+
+    /**
+     * Register deep-link rewrite: /community-master/<slug>/ → grid page + query var.
+     */
+    public static function register_rewrites(): void {
+        add_rewrite_rule(
+            '^community-master/([^/]+)/?$',
+            'index.php?pagename=community-master&community_project_slug=$matches[1]',
+            'top'
+        );
+    }
+
+    /**
+     * Whitelist the community_project_slug query var so WP carries it to the shortcode.
+     *
+     * @param string[] $vars
+     * @return string[]
+     */
+    public static function register_query_vars(array $vars): array {
+        $vars[] = 'community_project_slug';
+        return $vars;
+    }
+
+    /**
+     * Flush rewrite rules once per plugin version bump. Activation hook covers
+     * first install / reactivation; this covers in-place upgrades (git pull).
+     */
+    public static function maybe_flush_rewrites(): void {
+        if (get_option('community_master_version') !== COMMUNITY_MASTER_VERSION) {
+            self::register_rewrites();
+            flush_rewrite_rules();
+            update_option('community_master_version', COMMUNITY_MASTER_VERSION);
+        }
     }
 
     /**
