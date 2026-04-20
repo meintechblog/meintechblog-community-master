@@ -242,6 +242,10 @@
     background: #2271b1;
 }
 
+.cm-tile__btn--edit {
+    background: #6b7280;
+}
+
 /* Edit link (admin only) */
 
 .cm-tile__edit {

@@ -46,6 +46,10 @@ class Community_Master {
         add_action('admin_menu', [$this, 'add_view_page_link']);
         add_action('admin_menu', [$this, 'add_settings_page']);
         add_action('admin_init', [$this, 'register_settings']);
+
+        // On single-project deep-link views, retarget the admin bar "Edit"
+        // link from the grid page to the actual community_project post.
+        add_action('admin_bar_menu', [self::class, 'retarget_admin_bar_edit'], 80);
     }
 
     /**
@@ -80,6 +84,42 @@ class Community_Master {
             flush_rewrite_rules();
             update_option('community_master_version', COMMUNITY_MASTER_VERSION);
         }
+    }
+
+    /**
+     * When viewing a single-project deep-link (/community-master/<slug>/),
+     * rewrite the admin bar "Seite bearbeiten" node to open the matching
+     * community_project in the editor instead of the grid page.
+     *
+     * @param WP_Admin_Bar $wp_admin_bar
+     */
+    public static function retarget_admin_bar_edit($wp_admin_bar): void {
+        if (!($wp_admin_bar instanceof WP_Admin_Bar)) return;
+
+        $slug = get_query_var('community_project_slug');
+        if (!is_string($slug) || $slug === '') return;
+
+        $projects = get_posts([
+            'post_type'      => 'community_project',
+            'name'           => $slug,
+            'posts_per_page' => 1,
+            'post_status'    => 'any',
+        ]);
+        if (empty($projects)) return;
+
+        $project = $projects[0];
+        if (!current_user_can('edit_post', $project->ID)) return;
+
+        $edit_url = get_edit_post_link($project->ID);
+        if (!$edit_url) return;
+
+        $wp_admin_bar->remove_node('edit');
+        $wp_admin_bar->add_node([
+            'id'    => 'edit',
+            'title' => __('Projekt bearbeiten', 'community-master'),
+            'href'  => $edit_url,
+            'meta'  => ['title' => __('Dieses Community-Projekt im Editor öffnen', 'community-master')],
+        ]);
     }
 
     /**

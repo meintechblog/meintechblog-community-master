@@ -86,7 +86,11 @@ $bp_count = count($blogposts);
                             : sprintf(esc_html__('%d Blogartikel →', 'community-master'), $bp_count); ?>
                     </a>
                 <?php endif; ?>
-                <?php if ($can_edit) : ?>
+                <?php if ($can_edit && $is_single_view) : ?>
+                    <a class="cm-tile__btn cm-tile__btn--edit" href="<?php echo esc_url(get_edit_post_link($project->ID)); ?>">
+                        &#9998; <?php echo esc_html__('Projekt bearbeiten', 'community-master'); ?>
+                    </a>
+                <?php elseif ($can_edit) : ?>
                     <a class="cm-tile__edit" href="<?php echo esc_url(get_edit_post_link($project->ID)); ?>" title="<?php esc_attr_e('Bearbeiten', 'community-master'); ?>">&#9998;</a>
                 <?php endif; ?>
             </div>
