@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Community Master
  * Description: Manage and display community projects on meintechblog.de
- * Version:     1.4.5
+ * Version:     1.4.6
  * Author:      meintechblog
  * Text Domain: community-master
  * Requires PHP: 7.4
@@ -11,7 +11,7 @@
 
 defined('ABSPATH') || exit;
 
-define('COMMUNITY_MASTER_VERSION', '1.4.5');
+define('COMMUNITY_MASTER_VERSION', '1.4.6');
 define('COMMUNITY_MASTER_FILE', __FILE__);
 define('COMMUNITY_MASTER_DIR', plugin_dir_path(__FILE__));
 

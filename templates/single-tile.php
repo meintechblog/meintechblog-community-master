@@ -24,6 +24,11 @@ foreach ($tags as $key => $tag) {
 $can_edit     = current_user_can('edit_community_project', $project->ID);
 $has_logo     = has_post_thumbnail($project->ID);
 
+// Grid tiles link to the single-project page. On the single-project view
+// itself, the template is reused but we don't want the title to be a link.
+$is_single_view = (bool) get_query_var('community_project_slug');
+$detail_url     = $is_single_view ? '' : home_url('/community-master/' . $project->post_name . '/');
+
 // Get linked blogpost IDs (with migration from old single field)
 $blogpost_ids = get_post_meta($project->ID, '_community_master_blogpost_ids', true);
 if (!is_array($blogpost_ids) || empty($blogpost_ids)) {
@@ -48,14 +53,24 @@ $bp_count = count($blogposts);
 <div class="cm-tile<?php echo $has_logo ? ' cm-tile--has-logo' : ''; ?>" data-cm-title="<?php echo esc_attr(strtolower(get_the_title($project->ID))); ?>" data-cm-desc="<?php echo esc_attr(strtolower(wp_strip_all_tags($description))); ?>" data-cm-date="<?php echo esc_attr($project->post_date); ?>">
     <?php if ($has_logo) : ?>
         <div class="cm-tile__logo">
-            <?php echo get_the_post_thumbnail($project->ID, 'community-master-icon'); ?>
+            <?php if ($detail_url) : ?>
+                <a href="<?php echo esc_url($detail_url); ?>" class="cm-tile__logo-link" aria-label="<?php echo esc_attr(sprintf(__('%s öffnen', 'community-master'), get_the_title($project->ID))); ?>">
+                    <?php echo get_the_post_thumbnail($project->ID, 'community-master-icon'); ?>
+                </a>
+            <?php else : ?>
+                <?php echo get_the_post_thumbnail($project->ID, 'community-master-icon'); ?>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 
     <div class="cm-tile__body">
         <div class="cm-tile__header">
             <h3 class="cm-tile__title">
-                <?php echo esc_html(get_the_title($project->ID)); ?>
+                <?php if ($detail_url) : ?>
+                    <a href="<?php echo esc_url($detail_url); ?>" class="cm-tile__title-link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
+                <?php else : ?>
+                    <?php echo esc_html(get_the_title($project->ID)); ?>
+                <?php endif; ?>
                 <?php foreach ($active_tags as $key => $tag) : ?>
                     <span class="cm-badge cm-badge--<?php echo esc_attr($key); ?>" title="<?php echo esc_attr($tag['title']); ?>"><?php echo esc_html($tag['label']); ?></span>
                 <?php endforeach; ?>
