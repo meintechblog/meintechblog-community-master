@@ -361,21 +361,11 @@ class CM_REST_Restore {
      * @return array<int, array<string, mixed>>|WP_Error
      */
     private static function parse_posts(string $gz_path): array|WP_Error {
-        $fh = gzopen($gz_path, 'rb');
-        if (!$fh) {
-            return new WP_Error('gz_open_fail', 'Could not open backup file.', ['status' => 500]);
-        }
-
         $posts = [];
-        while (!gzeof($fh)) {
-            $line = gzgets($fh, 16 * 1024 * 1024); // up to 16MB per extended-insert line
-            if ($line === false) break;
-            if (!preg_match('/^\s*INSERT\s+INTO\s+`?' . preg_quote(self::posts_table(), '/') . '`?\s/i', $line)) {
-                continue;
-            }
-            $tuples = self::parse_insert_values($line);
+        $result = self::stream_insert_blocks($gz_path, self::posts_table(), function (string $block) use (&$posts): void {
+            $tuples = self::parse_insert_values($block);
             foreach ($tuples as $t) {
-                // Standard wp_posts column order:
+                // wp_posts column order:
                 // 0: ID, 1: post_author, 2: post_date, 3: post_date_gmt,
                 // 4: post_content, 5: post_title, 6: post_excerpt,
                 // 7: post_status, 8: comment_status, 9: ping_status,
@@ -388,20 +378,20 @@ class CM_REST_Restore {
                 if (($t[20] ?? null) !== 'community_project') continue;
                 $old_id = (int) $t[0];
                 $posts[$old_id] = [
-                    'old_id'         => $old_id,
-                    'post_author'    => (int) $t[1],
-                    'post_date'      => $t[2],
-                    'post_date_gmt'  => $t[3],
-                    'post_content'   => $t[4],
-                    'post_title'     => $t[5],
-                    'post_excerpt'   => $t[6],
-                    'post_status'    => $t[7],
-                    'post_name'      => $t[11],
-                    'menu_order'     => (int) $t[19],
+                    'old_id'        => $old_id,
+                    'post_author'   => (int) $t[1],
+                    'post_date'     => $t[2],
+                    'post_date_gmt' => $t[3],
+                    'post_content'  => $t[4],
+                    'post_title'    => $t[5],
+                    'post_excerpt'  => $t[6],
+                    'post_status'   => $t[7],
+                    'post_name'     => $t[11],
+                    'menu_order'    => (int) $t[19],
                 ];
             }
-        }
-        gzclose($fh);
+        });
+        if (is_wp_error($result)) return $result;
         return $posts;
     }
 
@@ -414,18 +404,8 @@ class CM_REST_Restore {
     private static function parse_postmeta(string $gz_path, array $post_ids): array|WP_Error {
         $want = array_flip(array_map('intval', $post_ids));
         $out  = [];
-
-        $fh = gzopen($gz_path, 'rb');
-        if (!$fh) {
-            return new WP_Error('gz_open_fail', 'Could not open backup file.', ['status' => 500]);
-        }
-        while (!gzeof($fh)) {
-            $line = gzgets($fh, 16 * 1024 * 1024);
-            if ($line === false) break;
-            if (!preg_match('/^\s*INSERT\s+INTO\s+`?' . preg_quote(self::postmeta_table(), '/') . '`?\s/i', $line)) {
-                continue;
-            }
-            $tuples = self::parse_insert_values($line);
+        $result = self::stream_insert_blocks($gz_path, self::postmeta_table(), function (string $block) use (&$out, $want): void {
+            $tuples = self::parse_insert_values($block);
             foreach ($tuples as $t) {
                 // wp_postmeta columns: 0:meta_id, 1:post_id, 2:meta_key, 3:meta_value
                 if (count($t) < 4) continue;
@@ -433,9 +413,59 @@ class CM_REST_Restore {
                 if (!isset($want[$post_id])) continue;
                 $out[$post_id][$t[2]] = $t[3];
             }
+        });
+        if (is_wp_error($result)) return $result;
+        return $out;
+    }
+
+    /**
+     * Stream the gzipped dump and invoke $on_block with each complete INSERT
+     * INTO `$table` ...; statement (possibly spanning multiple lines, as
+     * produced by mysqldump's one-tuple-per-line format).
+     *
+     * Block terminator: a line whose trimmed end is `;` — mysqldump always
+     * writes `...);` alone at statement end. String values cannot span
+     * lines (newlines inside them are escaped as `\n`), so this is safe.
+     */
+    private static function stream_insert_blocks(string $gz_path, string $table, callable $on_block): true|WP_Error {
+        $fh = gzopen($gz_path, 'rb');
+        if (!$fh) {
+            return new WP_Error('gz_open_fail', 'Could not open backup file.', ['status' => 500]);
+        }
+        $start_pattern = '/^\s*INSERT\s+INTO\s+`?' . preg_quote($table, '/') . '`?\s/i';
+
+        $collecting = false;
+        $buffer     = '';
+
+        while (!gzeof($fh)) {
+            $line = gzgets($fh, 16 * 1024 * 1024);
+            if ($line === false) break;
+
+            if (!$collecting) {
+                if (preg_match($start_pattern, $line)) {
+                    $collecting = true;
+                    $buffer     = $line;
+                } else {
+                    continue;
+                }
+            } else {
+                $buffer .= $line;
+            }
+
+            // Statement terminator: trimmed line ends with ";"
+            $trimmed = rtrim($line, "\r\n\t ");
+            if (substr($trimmed, -1) === ';') {
+                $on_block($buffer);
+                $collecting = false;
+                $buffer     = '';
+            }
+        }
+        if ($collecting && $buffer !== '') {
+            // Dangling block (no trailing ;) — still try to parse.
+            $on_block($buffer);
         }
         gzclose($fh);
-        return $out;
+        return true;
     }
 
     /**
@@ -448,36 +478,47 @@ class CM_REST_Restore {
      *
      * @return array<int, array<int, string|null>>
      */
-    private static function parse_insert_values(string $line): array {
-        // Skip past "VALUES"
-        $start = stripos($line, 'VALUES');
+    private static function parse_insert_values(string $block): array {
+        $start = stripos($block, 'VALUES');
         if ($start === false) return [];
         $pos = $start + strlen('VALUES');
-        $len = strlen($line);
+        $len = strlen($block);
 
         $tuples   = [];
         $current  = [];
         $field    = '';
+        $field_quoted = false; // was this field parsed inside single-quotes?
         $in_tuple = false;
         $in_str   = false;
 
+        $commit_field = static function () use (&$current, &$field, &$field_quoted): void {
+            if ($field_quoted) {
+                $current[] = $field; // preserve exact content including any leading/trailing spaces
+            } else {
+                $trim = trim($field);
+                $current[] = ($trim === 'NULL' || $trim === 'null') ? null : $trim;
+            }
+            $field        = '';
+            $field_quoted = false;
+        };
+
         while ($pos < $len) {
-            $ch = $line[$pos];
+            $ch = $block[$pos];
 
             if (!$in_tuple) {
                 if ($ch === '(') {
-                    $in_tuple = true;
-                    $field    = '';
-                    $current  = [];
+                    $in_tuple     = true;
+                    $field        = '';
+                    $field_quoted = false;
+                    $current      = [];
                 }
                 $pos++;
                 continue;
             }
 
-            // in tuple
             if ($in_str) {
                 if ($ch === '\\' && $pos + 1 < $len) {
-                    $nx = $line[$pos + 1];
+                    $nx = $block[$pos + 1];
                     switch ($nx) {
                         case 'n':  $field .= "\n"; break;
                         case 'r':  $field .= "\r"; break;
@@ -504,21 +545,25 @@ class CM_REST_Restore {
 
             // in tuple, not in string
             if ($ch === "'") {
-                $in_str = true;
+                // Opening a quoted string. Any whitespace collected so far
+                // (between , and ') is formatting noise — reset.
+                if (trim($field) === '') {
+                    $field = '';
+                }
+                $field_quoted = true;
+                $in_str       = true;
                 $pos++;
                 continue;
             }
             if ($ch === ',') {
-                $current[] = self::normalize_field($field);
-                $field     = '';
+                $commit_field();
                 $pos++;
                 continue;
             }
             if ($ch === ')') {
-                $current[] = self::normalize_field($field);
+                $commit_field();
                 $tuples[]  = $current;
                 $current   = [];
-                $field     = '';
                 $in_tuple  = false;
                 $pos++;
                 continue;
@@ -528,18 +573,5 @@ class CM_REST_Restore {
         }
 
         return $tuples;
-    }
-
-    /**
-     * Trim whitespace from unquoted tokens and convert literal NULL.
-     */
-    private static function normalize_field(string $raw): ?string {
-        $trim = trim($raw);
-        if ($trim === 'NULL' || $trim === 'null') {
-            return null;
-        }
-        // For quoted fields, $raw IS the decoded payload (the parser already
-        // consumed the quotes). For unquoted numbers we just return the token.
-        return $raw;
     }
 }
